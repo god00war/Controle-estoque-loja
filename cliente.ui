@@ -1,0 +1,1318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>861</width>
+    <height>553</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>MS Sans Serif</family>
+    <weight>75</weight>
+    <bold>true</bold>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QWidget" name="verticalLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>100</y>
+     <width>851</width>
+     <height>451</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <widget class="QTabWidget" name="Cadastro">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="currentIndex">
+       <number>2</number>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>25</width>
+        <height>25</height>
+       </size>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Dados Pessoais</string>
+       </attribute>
+       <widget class="QWidget" name="layoutWidget_14">
+        <property name="geometry">
+         <rect>
+          <x>560</x>
+          <y>90</y>
+          <width>261</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_48">
+         <item>
+          <widget class="QLabel" name="label_48">
+           <property name="text">
+            <string>CPF</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="cpf"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_15">
+        <property name="geometry">
+         <rect>
+          <x>430</x>
+          <y>260</y>
+          <width>391</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_49">
+         <item>
+          <widget class="QLabel" name="celular">
+           <property name="text">
+            <string>Celular</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="celular_2"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>211</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_35">
+         <item>
+          <widget class="QLabel" name="label_35">
+           <property name="text">
+            <string>Data Cad.</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDateEdit" name="dtCad">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_11">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>611</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_45">
+         <item>
+          <widget class="QLabel" name="label_45">
+           <property name="text">
+            <string>Nome fan.</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="nomeFan"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_7">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>130</y>
+          <width>211</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_41">
+         <item>
+          <widget class="QLabel" name="label_41">
+           <property name="text">
+            <string>Sexo</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="sexo">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <item>
+            <property name="text">
+             <string>Masculino</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Feminino</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_16">
+        <property name="geometry">
+         <rect>
+          <x>630</x>
+          <y>50</y>
+          <width>191</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_50">
+         <item>
+          <widget class="QLabel" name="label_50">
+           <property name="text">
+            <string>Dt. Nasc.</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDateEdit" name="dtNasc">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_5">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>10</y>
+          <width>581</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_39">
+         <item>
+          <widget class="QLabel" name="label_39">
+           <property name="text">
+            <string>Nome</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="nome">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>260</y>
+          <width>411</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_36">
+         <item>
+          <widget class="QLabel" name="label_36">
+           <property name="text">
+            <string>Telefone</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="telefone"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_3">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>90</y>
+          <width>251</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_37">
+         <item>
+          <widget class="QLabel" name="label_37">
+           <property name="text">
+            <string>RG</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="rg"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QCheckBox" name="simples">
+        <property name="geometry">
+         <rect>
+          <x>750</x>
+          <y>130</y>
+          <width>71</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Simples</string>
+        </property>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>230</x>
+          <y>130</y>
+          <width>301</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>CNPJ</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="cnpj"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>550</x>
+          <y>130</y>
+          <width>191</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>IE</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="le"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>170</y>
+          <width>811</width>
+          <height>73</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Observações</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QTextEdit" name="obs"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>300</y>
+          <width>411</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="sizeIncrement">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Empresa</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="empresa"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>430</x>
+          <y>300</y>
+          <width>391</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>Telefone</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="telEmp"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>340</y>
+          <width>411</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item>
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>Profissão</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="profissao"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>380</y>
+          <width>211</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <item>
+          <widget class="QLabel" name="label_7">
+           <property name="text">
+            <string>Estado Civil</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="estCivil"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>610</x>
+          <y>380</y>
+          <width>213</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <item>
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>Outras Rendas</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="outrasRendas"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>650</x>
+          <y>340</y>
+          <width>173</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_10">
+         <item>
+          <widget class="QLabel" name="label_10">
+           <property name="text">
+            <string>Salário</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="salario"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>290</x>
+          <y>90</y>
+          <width>241</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_11">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_43"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_43">
+           <property name="text">
+            <string>Dt. Emissão RG</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDateEdit" name="dateEdit">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>320</x>
+          <y>380</y>
+          <width>192</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_57">
+         <item>
+          <widget class="QLabel" name="label_8">
+           <property name="text">
+            <string>Casa Própria</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="casaS">
+           <property name="text">
+            <string>Sim</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="casaN">
+           <property name="text">
+            <string>Não</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Endereço/Foto</string>
+       </attribute>
+       <widget class="QLabel" name="label_52">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>170</y>
+          <width>47</width>
+          <height>13</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Foto</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>190</y>
+          <width>141</width>
+          <height>141</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Foto(ìcone)</string>
+        </property>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_4">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>130</y>
+          <width>381</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_38">
+         <item>
+          <widget class="QLabel" name="label_38">
+           <property name="text">
+            <string>Bairro</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="bairro"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_6">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>50</y>
+          <width>801</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_40">
+         <item>
+          <widget class="QLabel" name="label_40">
+           <property name="text">
+            <string>Complemento</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="complemento"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_8">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>90</y>
+          <width>201</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_42">
+         <item>
+          <widget class="QLabel" name="label_42">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>Cep</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="cep"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_10">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>10</y>
+          <width>641</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_44">
+         <item>
+          <widget class="QLabel" name="label_44">
+           <property name="text">
+            <string>Endereço</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="end"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_12">
+        <property name="geometry">
+         <rect>
+          <x>670</x>
+          <y>10</y>
+          <width>153</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_46">
+         <item>
+          <widget class="QLabel" name="label_46">
+           <property name="text">
+            <string>Nº</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="numero"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_13">
+        <property name="geometry">
+         <rect>
+          <x>530</x>
+          <y>90</y>
+          <width>291</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_47">
+         <item>
+          <widget class="QLabel" name="label_47">
+           <property name="text">
+            <string>Cidade</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cidade">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_25">
+        <property name="geometry">
+         <rect>
+          <x>260</x>
+          <y>90</y>
+          <width>231</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QLabel" name="label_51">
+           <property name="text">
+            <string>Estado</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="estado">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>360</y>
+          <width>221</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_51">
+         <item>
+          <widget class="QLabel" name="label_17">
+           <property name="text">
+            <string>Cadastro:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="cadNormal">
+           <property name="text">
+            <string>Normal</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="cadIrregular">
+           <property name="text">
+            <string>Irregular</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>Referências/Limite</string>
+       </attribute>
+       <widget class="QWidget" name="layoutWidget_17">
+        <property name="geometry">
+         <rect>
+          <x>500</x>
+          <y>90</y>
+          <width>321</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_17">
+         <item>
+          <widget class="QLabel" name="label_14">
+           <property name="text">
+            <string>Telefone</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="tel3"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_18">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>160</y>
+          <width>285</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_52">
+         <item>
+          <widget class="QLabel" name="label_49">
+           <property name="text">
+            <string>Limite de Crédito</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="limite"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_19">
+        <property name="geometry">
+         <rect>
+          <x>500</x>
+          <y>50</y>
+          <width>321</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_16">
+         <item>
+          <widget class="QLabel" name="label_16">
+           <property name="text">
+            <string>Telefone</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="tel2"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_20">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>471</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_13">
+         <item>
+          <widget class="QLabel" name="label_12">
+           <property name="text">
+            <string>Referêcia 2</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="ref2"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_21">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>90</y>
+          <width>471</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_14">
+         <item>
+          <widget class="QLabel" name="label_13">
+           <property name="text">
+            <string>Referêcia 3</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="ref3"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_22">
+        <property name="geometry">
+         <rect>
+          <x>500</x>
+          <y>10</y>
+          <width>321</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_15">
+         <item>
+          <widget class="QLabel" name="label_15">
+           <property name="text">
+            <string>Telefone</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="tel1"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_23">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>471</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_12">
+         <item>
+          <widget class="QLabel" name="label_11">
+           <property name="text">
+            <string>Referêcia 1</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="ref1"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QTableView" name="tabCompradores">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>280</y>
+          <width>811</width>
+          <height>111</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_24">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>240</y>
+          <width>131</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_58">
+         <item>
+          <widget class="QLabel" name="label_53">
+           <property name="text">
+            <string>Compradores</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="novocomprador">
+           <property name="text">
+            <string>(+)</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>icons/add.png</normaloff>icons/add.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>851</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_53">
+    <item>
+     <widget class="QFrame" name="frame">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QToolButton" name="editar">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>20</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Edit</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>icons/editfile.png</normaloff>icons/editfile.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>25</width>
+         <height>25</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QToolButton" name="excluir">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>20</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Excluir</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>icons/trash.png</normaloff>icons/trash.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>25</width>
+         <height>25</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QToolButton" name="buscar">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>20</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Buscar</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>icons/buscar.png</normaloff>icons/buscar.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>25</width>
+         <height>25</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QToolButton" name="voltarTela">
+       <property name="geometry">
+        <rect>
+         <x>764</x>
+         <y>20</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Voltar</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>icons/return.png</normaloff>icons/return.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>25</width>
+         <height>25</height>
+        </size>
+       </property>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>60</y>
+     <width>851</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_54">
+    <item>
+     <widget class="QFrame" name="frame_2">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QToolButton" name="novo">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>10</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>(+)</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>icons/add.png</normaloff>icons/add.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>25</width>
+         <height>25</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_55">
+       <property name="geometry">
+        <rect>
+         <x>370</x>
+         <y>10</y>
+         <width>111</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Ultima Compra:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_56">
+       <property name="geometry">
+        <rect>
+         <x>580</x>
+         <y>10</y>
+         <width>141</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Ultima Atualização:</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>80</x>
+         <y>10</y>
+         <width>121</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_55">
+        <item>
+         <widget class="QLabel" name="label_54">
+          <property name="text">
+           <string>Código</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="codigo"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>210</x>
+         <y>10</y>
+         <width>148</width>
+         <height>33</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_56">
+        <item>
+         <widget class="QToolButton" name="primeiro">
+          <property name="text">
+           <string>&lt;&lt;</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>icons/voltatd.png</normaloff>icons/voltatd.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>25</width>
+            <height>25</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="anterior">
+          <property name="text">
+           <string>&lt;</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>icons/volta1.png</normaloff>icons/volta1.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>25</width>
+            <height>25</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="proximo">
+          <property name="text">
+           <string>&gt;</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>icons/avanca1.png</normaloff>icons/avanca1.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>25</width>
+            <height>25</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="ultimo">
+          <property name="text">
+           <string>&gt;&gt;</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>icons/avancatd.png</normaloff>icons/avancatd.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>25</width>
+            <height>25</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

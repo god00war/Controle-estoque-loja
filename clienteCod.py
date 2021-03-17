@@ -10,7 +10,7 @@ import pandas as pd
 import locale
 import datetime as dt
 defaultImg ="product.png"
-
+# testando git hub
 class ClienteLogin(qtw.QWidget, Ui_Form):
 
     def __init__(self, *args, **kwargs):

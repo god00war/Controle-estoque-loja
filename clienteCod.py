@@ -16,15 +16,19 @@ class ClienteLogin(qtw.QWidget, Ui_Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Your code will go here
+        #tabwidget.setCurrentWidget(tabwidget.findChild(QWidget, tabname))
         #self.ui = Ui_Form()  ### Para não usar o .ui tem que declarar o 'Ui_Form' no parametro da classe
         #self.ui.setupUi(self)       self.setupUi(self)
         self.setupUi(self)
         locale.setlocale(locale.LC_ALL, '')  # Define o local
+        #index = self.tabwidget.indexOf(0)
+        #self.setCurrentIndex(0)
         self.primeiro.clicked.connect(self.addCliente)
         self.pushButton.clicked.connect(self.uploadImg)
         self.ultimo.clicked.connect(self.teste)
         # Your code ends here
         self.show()
+
 
     def uploadImg(self): # Abre os arquivos para procurar a imagem e a salva na pasta
         global defaultImg

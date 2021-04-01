@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtWidgets as qtw
 from estoqueTela import Ui_AlterarEstoque
 from testebancosqlite import conexaoBanco as conexao
-from produtoCod import altestoque as pd
+#from produtoCod import altestoque as pd
 
 class TelaEstoque(qtw.QWidget, Ui_AlterarEstoque):
 
@@ -13,7 +13,7 @@ class TelaEstoque(qtw.QWidget, Ui_AlterarEstoque):
         self.alterar.clicked.connect(self.altEstoque)
         self.show()
 
-    def altEstoque(self):
+    """altEstoque(self):
         id = pd()
         quant = self.codigo.text()
         if (id !=""):
@@ -28,7 +28,7 @@ class TelaEstoque(qtw.QWidget, Ui_AlterarEstoque):
             pass
         else:
             QMessageBox.information(self, "Info", "Preencha o Códifo do Produto")
-
+"""
 if __name__ == '__main__':
     app = qtw.QApplication(sys.argv)
     w = TelaEstoque()

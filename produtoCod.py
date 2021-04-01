@@ -24,11 +24,14 @@ class ProdCad(qtw.QWidget, Ui_Form):
         global flag
         flag = "0"
         #self.primeiro.clicked.connect(self.)
-        self.ultimo.clicked.connect(self.teste)
+        self.primeiro.clicked.connect(self.primeiroItem)
+        self.anterior.clicked.connect(self.anteriorItem)
+        self.proximo.clicked.connect(self.proximoItem)
+        self.ultimo.clicked.connect(self.ultimoItem)
         self.editar.clicked.connect(self.editProduto)
         self.novo.clicked.connect(self.newProd)
         self.imprimir.clicked.connect(self.addProd)
-        self.estoque.clicked.connect(self.altestoque)
+        #self.estoque.clicked.connect(self.altestoque)
         #self.editar.bind("<Return>", self.editProduto)
         # Your code ends here
         self.show()
@@ -68,64 +71,74 @@ class ProdCad(qtw.QWidget, Ui_Form):
                 QMessageBox.information(self, "Info", "Preencher Campos Obrigatórios") 
 
     def editProduto(self):
-        codigo = self.codigo.text()
-        print(codigo)
-        con = conexao()
-        c = con.cursor()
-        c.execute(" SELECT * FROM produtos where prod_id = (?)", (codigo,))
-        con.commit()
-        resultado = c.fetchall()
-        c.close()
-        print(resultado)
+        try:
+            codigo = self.codigo.text()
+            con = conexao()
+            c = con.cursor()
+            c.execute(" SELECT * FROM produtos where prod_id = (?)", (codigo,))
+            con.commit()
+            resultado = c.fetchall()
+            c.close()
 
-        ############## Recebendo Valores ######################
-        undMedida = resultado[0][3]
-        classe = resultado[0][4]
-        setor = resultado[0][7]
-        if (undMedida != ""): ########### Setando o valor da Medida
-            if (undMedida == "Unidade"):
-                undMedida = "0"
-            elif (undMedida == "Caixa"):
-                undMedida = "1"
-            elif (undMedida == "Peça"):
-                undMedida = "2"
-            elif (undMedida == "Conjunto"):
-                undMedida = "3"
-            self.undMedida.setCurrentIndex(int(undMedida))
+            ############## Recebendo Valores ######################
+            undMedida = resultado[0][3]
+            classe = resultado[0][4]
+            setor = resultado[0][7]
+            if (undMedida != ""):  ########### Setando o valor da Medida
+                if (undMedida == "Unidade"):
+                    undMedida = "0"
+                elif (undMedida == "Caixa"):
+                    undMedida = "1"
+                elif (undMedida == "Peça"):
+                    undMedida = "2"
+                elif (undMedida == "Conjunto"):
+                    undMedida = "3"
+                else:
+                    undMedida = "0"
+                self.undMedida.setCurrentIndex(int(undMedida))
 
-        if (classe != ""): ########### Setando o valor da Classe
-            if (classe == "Diverso"):
-                classe = "0"
-            elif (classe == "Roupa"):
-                classe = "1"
-            elif (classe == "Calçado"):
-                classe = "2"
-            self.classe.setCurrentIndex(int(classe))
+            if (classe != ""):  ########### Setando o valor da Classe
+                if (classe == "Diverso"):
+                    classe = "0"
+                elif (classe == "Roupa"):
+                    classe = "1"
+                elif (classe == "Calçado"):
+                    classe = "2"
+                else:
+                    classe = "0"
+                self.classe.setCurrentIndex(int(classe))
 
-        if (setor != ""): ########### Setando o valor do setor
-            if (setor == "Masculino"):
-                setor = "0"
-            elif (setor == "Feminino"):
-                setor = "1"
-            elif (setor == "Infantil"):
-                setor = "2"
-            elif (setor == "Calçado"):
-                setor = "3"
-            self.setor.setCurrentIndex(int(setor))
+            if (setor != ""):  ########### Setando o valor do setor
+                if (setor == "Masculino"):
+                    setor = "0"
+                elif (setor == "Feminino"):
+                    setor = "1"
+                elif (setor == "Infantil"):
+                    setor = "2"
+                elif (setor == "Calçado"):
+                    setor = "3"
+                else:
+                    setor = "0"
+                self.setor.setCurrentIndex(int(setor))
 
-        dtCad = resultado[0][8]
-        print(dtCad)
-        if (dtCad != ""):
-            data = datetime.strptime(dtCad, '%d/%m/%Y')
-            print(data)
+            dtCad = resultado[0][8]
+            print(dtCad)
+            if (dtCad != ""):
+                data = datetime.strptime(dtCad, '%d/%m/%Y')
+            else:
+                data = datetime.today()
 
-        ############# Inserindo valores nos Campos ############
-        self.descricao.setText(str(resultado[0][1]))
-        self.codBarras.setText(str(resultado[0][2]))
-        self.precocusto.setText(str(resultado[0][5]))
-        self.precofinal.setText(str(resultado[0][6]))
-        self.dtCad.setDate(data)
-        self.lucro.setText(str(resultado[0][9]))
+            ############# Inserindo valores nos Campos ############
+            self.descricao.setText(str(resultado[0][1]))
+            self.codBarras.setText(str(resultado[0][2]))
+            self.precocusto.setText(str(resultado[0][5]))
+            self.precofinal.setText(str(resultado[0][6]))
+            self.dtCad.setDate(data)
+            self.lucro.setText(str(resultado[0][9]))
+        except Error as e:
+            print(e)
+            return e
+        pass
 
     def newProd(self):
         data = datetime.today()
@@ -137,7 +150,8 @@ class ProdCad(qtw.QWidget, Ui_Form):
         self.lucro.setText("")
         self.codigo.setText("")
 
-    def altestoque(self):
+
+        """def altestoque(self):
         global flag
         print(flag)
         codProd = self.codigo.text()
@@ -145,26 +159,71 @@ class ProdCad(qtw.QWidget, Ui_Form):
         if(flag =="0"):
             flag = "1"
             self.newproduto = alterarEstoqueCod.TelaEstoque()
-        return codProd
+        return codProd"""
 
 
     def ultimoItem(self):
         try:
-            con = fdb.connect(
-                host="localhost", database="C:/Users/God War/Documents/TCC/Banco de dados/gino14.FDB",
-                user='sysdba',
-                password='masterkey'
-            )
-
-            cur = con.cursor()
-            cur.execute("SELECT *FROM t007_produtos ORDER BY T007_NR_CODIGO DESC ")
-            ultimoItem = cur.fetchall()[0][0]
+            con = conexao()
+            c = con.cursor()
+            c.execute(" SELECT * FROM produtos order by prod_id DESC")
             con.commit()
-            con.close
-            return ultimoItem
+            resultado = c.fetchall()
+            c.close()
+            self.codigo.setText(str(resultado[0][0]))
+            self.editProduto()
         except Exception as e:
             print(e)
         pass
+
+    def primeiroItem(self):
+        try:
+            con = conexao()
+            c = con.cursor()
+            c.execute(" SELECT * FROM produtos")
+            con.commit()
+            resultado = c.fetchone()
+            c.close()
+            self.codigo.setText(str(resultado[0]))
+            self.editProduto()
+        except Exception as e:
+            print(e)
+        pass
+
+    def proximoItem(self):
+        try:
+            con = conexao()
+            c = con.cursor()
+            c.execute(" SELECT * FROM produtos order by prod_id DESC")
+            con.commit()
+            ultimo = c.fetchall()
+            c.close()
+            ultimo = ultimo[0][0]
+            ultimo = int(ultimo)
+        except Exception as e:
+            print(e)
+        pass
+        resultado = self.codigo.text()
+        resultado = int(resultado)
+        if(resultado < ultimo):
+            resultado = int(resultado) + 1
+            self.codigo.setText(str(resultado))
+            self.editProduto()
+        else:
+            QMessageBox.information(self, "Info", "Produto Não Localizado")
+
+
+
+    def anteriorItem(self):
+        resultado = self.codigo.text()
+        resultado = int(resultado)
+        if (resultado > 1):
+            resultado = resultado - 1
+            self.codigo.setText(str(resultado))
+            self.editProduto()
+        else:
+            QMessageBox.information(self, "Info", "Produto Não Localizado")
+
 """
 class TelaEstoque(qtw.QWidget, Ui_Form):
 

@@ -9,7 +9,7 @@ from produtoTela import Ui_Form
 from testebancosqlite import executarSelect as sel
 from testebancosqlite import conexaoBanco as conexao
 from sqlite3 import Error
-
+from tkinter import *
 flag = "0"
 
 class ProdCad(qtw.QWidget, Ui_Form):
@@ -31,8 +31,9 @@ class ProdCad(qtw.QWidget, Ui_Form):
         self.editar.clicked.connect(self.editProduto)
         self.novo.clicked.connect(self.newProd)
         self.imprimir.clicked.connect(self.addProd)
+        self.voltarTela.clicked.connect(self.fecharTela)
         #self.estoque.clicked.connect(self.altestoque)
-        #self.editar.bind("<Return>", self.editProduto)
+        #self.codigo.bind("<Return>", self.editProduto)
         # Your code ends here
         self.show()
 
@@ -40,6 +41,9 @@ class ProdCad(qtw.QWidget, Ui_Form):
         sq = " SELECT * FROM produtos"
         a = sel(sq)
         print(a)
+
+    def fecharTela(self):
+        self.close()
 
     def addProd(self): #Adiciona o produto no Banco de Dados
             ##### Pegar Campos #############
@@ -140,6 +144,29 @@ class ProdCad(qtw.QWidget, Ui_Form):
             return e
         pass
 
+        ##################### Desabilitando os Campos para Edição #####################
+        self.undMedida.setEnabled(False)
+        self.classe.setEnabled(False)
+        self.setor.setEnabled(False)
+        self.descricao.setEnabled(False)
+        self.codBarras.setEnabled(False)
+        self.precocusto.setEnabled(False)
+        self.precofinal.setEnabled(False)
+        self.dtCad.setEnabled(False)
+        self.lucro.setEnabled(False)
+
+    def habilitarCampos(self):
+        ##################### Habilitando os Campos para Edição #####################
+        self.undMedida.setEnabled(True)
+        self.classe.setEnabled(True)
+        self.setor.setEnabled(True)
+        self.descricao.setEnabled(True)
+        self.codBarras.setEnabled(True)
+        self.precocusto.setEnabled(True)
+        self.precofinal.setEnabled(True)
+        self.dtCad.setEnabled(True)
+        self.lucro.setEnabled(True)
+
     def newProd(self):
         data = datetime.today()
         self.dtCad.setDate(data)
@@ -149,6 +176,7 @@ class ProdCad(qtw.QWidget, Ui_Form):
         self.precofinal.setText("")
         self.lucro.setText("")
         self.codigo.setText("")
+        self.habilitarCampos()
 
 
         """def altestoque(self):
@@ -204,6 +232,8 @@ class ProdCad(qtw.QWidget, Ui_Form):
             print(e)
         pass
         resultado = self.codigo.text()
+        if (resultado == ""):
+            resultado = 0
         resultado = int(resultado)
         if(resultado < ultimo):
             resultado = int(resultado) + 1
@@ -216,6 +246,8 @@ class ProdCad(qtw.QWidget, Ui_Form):
 
     def anteriorItem(self):
         resultado = self.codigo.text()
+        if (resultado == ""):
+            resultado = 1
         resultado = int(resultado)
         if (resultado > 1):
             resultado = resultado - 1

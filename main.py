@@ -4,6 +4,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import Qt
 import clienteCod
 import produtoCod
+import vendaCod
 from PIL import Image
 
 
@@ -39,6 +40,7 @@ class Main(QMainWindow):
         ###################Vendas############
         self.venda = QAction(QIcon('icons/shop-cart.png'), "Fazer Venda", self)
         self.tb.addAction(self.venda)
+        self.venda.triggered.connect(self.funcVenda)
         self.tb.addSeparator()
 
     def funcCliente(self):
@@ -46,6 +48,9 @@ class Main(QMainWindow):
 
     def funcProd(self):
         self.newproduto = produtoCod.ProdCad()
+
+    def funcVenda(self):
+        self.venda = vendaCod.Venda()
 
 def main():
     App=QApplication(sys.argv)

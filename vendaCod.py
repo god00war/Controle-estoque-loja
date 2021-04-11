@@ -6,6 +6,7 @@ from testebancosqlite import executarSelect as sel
 from testebancosqlite import conexaoBanco as conexao
 from sqlite3 import Error
 from datetime import datetime
+from buscarVendaCod import buscarVenda as bv
 import main
 
 
@@ -22,6 +23,7 @@ class Venda(qtw.QWidget, Ui_Form):
         self.recebido.editingFinished.connect(self.calctroco)
         self.clicod.editingFinished.connect(self.buscarCliente)
         self.salvar.clicked.connect(self.addProd)
+        self.buscar.clicked.connect(self.buscarVenda)
         #self.cadcliente.clicked.connect(self.cadcliente)
         self.show()
 
@@ -30,6 +32,10 @@ class Venda(qtw.QWidget, Ui_Form):
 
     def fecharTela(self):
         self.close()
+
+    def buscarVenda(self):
+        self.buscar = bv()
+        self.fecharTela()
 
     def limparProd(self):
         self.prodcod.setText("")

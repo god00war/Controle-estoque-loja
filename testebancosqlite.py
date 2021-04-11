@@ -1,6 +1,10 @@
 import sqlite3
 from sqlite3 import Error
 
+
+venid = "5"
+prodid = "3"
+qtd = "1    "
 def conexaoBanco():
     caminho = "C:\\Users\\God War\\Documents\\TCC\\banco de dados\\sqlite\\ginomodas.db"
     con = None
@@ -23,19 +27,19 @@ def executarSelect(sql):
     except Error as e:
         print(e)
 
-def executarSql(sql):
+def executarSql():
     try:
         conexao = conexaoBanco()
         c = conexao.cursor()
-        c.execute(sql)
+        c.execute("INSERT INTO itensvenda (ven_id, prod_id, item_qtd) VALUES (?, ?, ?)", (venid, prodid, qtd))
         conexao.commit()
         c.close()
     except Error as e:
         print(e)
 
-#sq = '("INSERT INTO produtos (prod_desc, prod_cod) VALUES (?, ?)", (descricao, codBarras))'
+#sq = ("INSERT INTO itensvendas (ven_id, prod_id, item_qtd) VALUES (?, ?, ?)", (venid, prodid, qtd))
 
-#executarSql(sq)
+executarSql()
 #print(vcon)
 
 #vsql = " SELECT * FROM produtos"

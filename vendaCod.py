@@ -11,7 +11,6 @@ import main
 
 
 class Venda(qtw.QWidget, Ui_Form):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
@@ -35,7 +34,6 @@ class Venda(qtw.QWidget, Ui_Form):
 
     def buscarVenda(self):
         self.buscar = bv()
-        self.fecharTela()
 
     def limparProd(self):
         self.prodcod.setText("")

@@ -21,8 +21,13 @@ class buscarVenda(qtw.QWidget, Ui_Form):
         self.primeiro.clicked.connect(self.primeiroItem)
         self.proximo.clicked.connect(self.proximoItem)
         self.anterior.clicked.connect(self.anteriorItem)
+        self.voltarTela.clicked.connect(self.fecharTela)
         #self.cadcliente.clicked.connect(self.cadcliente)
         self.show()
+
+    def fecharTela(self):
+        self.close()
+
 
     def buscarProduto(self):
         try:
@@ -187,8 +192,6 @@ class buscarVenda(qtw.QWidget, Ui_Form):
             self.buscarProduto()
         else:
             QMessageBox.information(self, "Info", "Produto Não Localizado")
-
-
 
     def anteriorItem(self):
         resultado = self.venid.text()

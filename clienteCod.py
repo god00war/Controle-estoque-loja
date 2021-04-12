@@ -30,6 +30,7 @@ class ClienteLogin(qtw.QWidget, Ui_Form):
         self.editar.clicked.connect(self.habilitarCampos)
         self.estado.currentIndexChanged.connect(self.getCidades)
         self.voltarTela.clicked.connect(self.fecharTela)
+        self.cancelar.close()
         # Your code ends here
         self.show()
 
@@ -53,6 +54,8 @@ class ClienteLogin(qtw.QWidget, Ui_Form):
 
     def fecharTela(self):
         self.close()
+
+
 
     def getEstados(self): ########## Adiciona estados no Combo box ###############
         try:
@@ -111,7 +114,7 @@ class ClienteLogin(qtw.QWidget, Ui_Form):
         nameFan = self.nomeFan.text()
         dtNasc = self.dtNasc.text()
         rg = self.rg.text()
-        dtemiss = self.dateEdit.text()
+        dtemiss = self.dtRg.text()
         cpf = self.cpf.text()
         sexo = self.sexo.currentText()
         obser = self.obs.toPlainText()
@@ -291,7 +294,7 @@ class ClienteLogin(qtw.QWidget, Ui_Form):
             self.dtNasc.setDate(dtNasc)
         if (dtemiss != ""): ########### string to date ##################
             dtemiss = datetime.strptime(dtemiss, '%d/%m/%Y')
-            self.dateEdit.setDate(dtemiss)
+            self.dtRg.setDate(dtemiss)
         if (sexo != ""):  ########### Setando o index do sexo ##################
             if (sexo == "Masculino"):
                 sexo = "0"
@@ -361,7 +364,7 @@ class ClienteLogin(qtw.QWidget, Ui_Form):
         ##################### Desabilitando os Campos para Edição #####################
         self.dtCad.setEnabled(False)
         self.dtNasc.setEnabled(False)
-        self.dateEdit.setEnabled(False)
+        self.dtRg.setEnabled(False)
         self.sexo.setEnabled(False)
         self.nome.setEnabled(False)
         self.nomeFan.setEnabled(False)
@@ -397,7 +400,7 @@ class ClienteLogin(qtw.QWidget, Ui_Form):
         ##################### Habilitando os Campos para Edição #####################
         self.dtCad.setEnabled(True)
         self.dtNasc.setEnabled(True)
-        self.dateEdit.setEnabled(True)
+        self.dtRg.setEnabled(True)
         self.sexo.setEnabled(True)
         self.nome.setEnabled(True)
         self.nomeFan.setEnabled(True)
@@ -433,7 +436,7 @@ class ClienteLogin(qtw.QWidget, Ui_Form):
         data = datetime.today()
         self.dtCad.setDate(data)
         #self.dtNasc.setDate(dtNasc)
-        #self.dateEdit.setDate(dtemiss)
+        #self.dtRg.setDate(dtemiss)
         self.sexo.setCurrentIndex(2)
         self.nome.setText("")
         self.nomeFan.setText("")

@@ -4,13 +4,12 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from datetime import datetime
 import alterarEstoqueCod
-from estoqueTela import *
 from produtoTela import Ui_Form
 from testebancosqlite import executarSelect as sel
 from testebancosqlite import conexaoBanco as conexao
 from sqlite3 import Error
 from tkinter import *
-flag = "0"
+prodid = "0"
 
 class ProdCad(qtw.QWidget, Ui_Form):
 
@@ -28,14 +27,35 @@ class ProdCad(qtw.QWidget, Ui_Form):
         self.anterior.clicked.connect(self.anteriorItem)
         self.proximo.clicked.connect(self.proximoItem)
         self.ultimo.clicked.connect(self.ultimoItem)
-        self.editar.clicked.connect(self.editProduto)
+        self.editar.clicked.connect(self.liberarCampos)
+        self.codigo.editingFinished.connect(self.buscarProduto)
         self.novo.clicked.connect(self.newProd)
-        self.imprimir.clicked.connect(self.addProd)
+        self.salvar.clicked.connect(self.addProd)
         self.voltarTela.clicked.connect(self.fecharTela)
-        #self.estoque.clicked.connect(self.altestoque)
-        #self.codigo.bind("<Return>", self.editProduto)
+        self.estoque.clicked.connect(self.altestoque)
+        self.lucro.editingFinished.connect(self.calcularporcentagem)
+        self.cancelar.close()
+        self.cancelar.clicked.connect(self.cancel)
+        #self.codigo.bind("<Return>", self.buscarProduto)
         # Your code ends here
         self.show()
+
+    def liberarCampos(self):
+        msg = "Deseja Mesmo Alterar o Produto?"
+        title = "Alterar Produto"
+        valor = self.messagebox(msg, title)
+        if valor == QMessageBox.Ok:
+            self.habilitarCampos()
+            self.codigo.setEnabled(False)
+            self.cancelar.show()
+
+    def calcularporcentagem(self):
+        lucro = self.lucro.text()
+        precocusto = self.precocusto.text()
+        if((lucro and precocusto != '')):
+            if(lucro and precocusto != '0'):
+                total = (float(precocusto) + (float(precocusto) * float(lucro) / 100))
+                self.precofinal.setText(str(total))
 
     def teste(self):
         sq = " SELECT * FROM produtos"
@@ -45,8 +65,54 @@ class ProdCad(qtw.QWidget, Ui_Form):
     def fecharTela(self):
         self.close()
 
+    def messagebox(self, msg, title):
+        msgBox = QMessageBox()
+        msgBox.setText(msg)
+        msgBox.setWindowTitle(title)
+        msgBox.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        value = msgBox.exec()
+        return value
+
     def addProd(self): #Adiciona o produto no Banco de Dados
+            validador = self.codigo.text()
+            if(validador == ''):
+                ##### Pegar Campos #############
+                descricao = self.descricao.text()
+                codBarras = self.codBarras.text()
+                undMedida = self.undMedida.currentText()
+                classe = self.classe.currentText()
+                precocusto = self.precocusto.text()
+                precofinal = self.precofinal.text()
+                lucro = self.lucro.text()
+                if (precofinal and precocusto != ""):
+                    lucro = (float(precofinal) / float(precocusto) - 1) * 100
+                    print (lucro)
+                setor = self.setor.currentText()
+                dtCad = self.dtCad.text()
+
+                if (descricao != ""):
+                    try:
+                        con = conexao()
+                        c = con.cursor()
+                        c.execute("INSERT INTO produtos (prod_desc, prod_cod, prod_med, prod_classe, prod_custo, prod_preco, prod_lucro, prod_setor, prod_dtcad) VALUES (?,?,?,?,?,?,?,?,?)",
+                                  (descricao, codBarras, undMedida, classe, precocusto, precofinal, lucro, setor, dtCad))
+                        con.commit()
+                        c.close()
+                        QMessageBox.information(self, "Info", "Produto Adicionado com Sucesso")
+                    except Error as e:
+                        print(e)
+                else:
+                    QMessageBox.information(self, "Info", "Preencher Campos Obrigatórios")
+            else:
+                self.editProduto() ######### se tiver um produto selecionado, chama editProduto
+
+    def editProduto(self):
+        msg = "Confirma as alterações no Produto?"
+        title = "Alterar Produto"
+        valor = self.messagebox(msg, title)
+        if valor == QMessageBox.Ok:
             ##### Pegar Campos #############
+            prodId = self.codigo.text()
             descricao = self.descricao.text()
             codBarras = self.codBarras.text()
             undMedida = self.undMedida.currentText()
@@ -56,7 +122,7 @@ class ProdCad(qtw.QWidget, Ui_Form):
             lucro = self.lucro.text()
             if (precofinal and precocusto != ""):
                 lucro = (float(precofinal) / float(precocusto) - 1) * 100
-                print (lucro)
+                print(lucro)
             setor = self.setor.currentText()
             dtCad = self.dtCad.text()
 
@@ -64,19 +130,25 @@ class ProdCad(qtw.QWidget, Ui_Form):
                 try:
                     con = conexao()
                     c = con.cursor()
-                    c.execute("INSERT INTO produtos (prod_desc, prod_cod, prod_med, prod_classe, prod_custo, prod_preco, prod_lucro, prod_setor, prod_dtcad) VALUES (?,?,?,?,?,?,?,?,?)",
-                              (descricao, codBarras, undMedida, classe, precocusto, precofinal, lucro, setor, dtCad))
+                    c.execute(" UPDATE produtos SET prod_desc = (?), prod_cod = (?), prod_med = (?), prod_classe = (?), prod_custo = (?), prod_preco = (?), prod_lucro = (?), prod_setor = (?), prod_dtcad = (?) WHERE prod_id = (?)",
+                              (descricao, codBarras, undMedida, classe, precocusto, precofinal, lucro, setor, dtCad, prodId))
                     con.commit()
                     c.close()
-                    QMessageBox.information(self, "Info", "Produto Adicionado com Sucesso")
+                    QMessageBox.information(self, "Info", "Produto Alterado com Sucesso")
                 except Error as e:
                     print(e)
             else:
-                QMessageBox.information(self, "Info", "Preencher Campos Obrigatórios") 
+                QMessageBox.information(self, "Info", "Preencher Campos Obrigatórios")
 
-    def editProduto(self):
+    def cancel(self):
+        self.newProd()
+        self.codigo.setEnabled(True)
+
+    def buscarProduto(self):
         try:
             codigo = self.codigo.text()
+            global prodid
+            prodid = codigo
             con = conexao()
             c = con.cursor()
             c.execute(" SELECT * FROM produtos where prod_id = (?)", (codigo,))
@@ -177,18 +249,21 @@ class ProdCad(qtw.QWidget, Ui_Form):
         self.lucro.setText("")
         self.codigo.setText("")
         self.habilitarCampos()
+        self.codigo.setEnabled(False)
 
 
-        """def altestoque(self):
-        global flag
-        print(flag)
-        codProd = self.codigo.text()
-        print(codProd)
-        if(flag =="0"):
-            flag = "1"
+    def altestoque(self):
+        msg = "Deseja Mesmo Alterar o Estoque?"
+        title = "Alterar Estoque"
+        valor = self.messagebox(msg,title)
+        if valor== QMessageBox.Ok:
             self.newproduto = alterarEstoqueCod.TelaEstoque()
-        return codProd"""
 
+
+    def retornarProdId(self):
+        global prodid
+        id = prodid
+        return id
 
     def ultimoItem(self):
         try:
@@ -199,7 +274,7 @@ class ProdCad(qtw.QWidget, Ui_Form):
             resultado = c.fetchall()
             c.close()
             self.codigo.setText(str(resultado[0][0]))
-            self.editProduto()
+            self.buscarProduto()
         except Exception as e:
             print(e)
         pass
@@ -213,7 +288,7 @@ class ProdCad(qtw.QWidget, Ui_Form):
             resultado = c.fetchone()
             c.close()
             self.codigo.setText(str(resultado[0]))
-            self.editProduto()
+            self.buscarProduto()
         except Exception as e:
             print(e)
         pass
@@ -238,7 +313,7 @@ class ProdCad(qtw.QWidget, Ui_Form):
         if(resultado < ultimo):
             resultado = int(resultado) + 1
             self.codigo.setText(str(resultado))
-            self.editProduto()
+            self.buscarProduto()
         else:
             QMessageBox.information(self, "Info", "Produto Não Localizado")
 
@@ -252,7 +327,7 @@ class ProdCad(qtw.QWidget, Ui_Form):
         if (resultado > 1):
             resultado = resultado - 1
             self.codigo.setText(str(resultado))
-            self.editProduto()
+            self.buscarProduto()
         else:
             QMessageBox.information(self, "Info", "Produto Não Localizado")
 

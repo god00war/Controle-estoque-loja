@@ -9,6 +9,7 @@ from testebancosqlite import executarSelect as sel
 from testebancosqlite import conexaoBanco as conexao
 from sqlite3 import Error
 from tkinter import *
+import buscarProdCod
 prodid = "0"
 
 class ProdCad(qtw.QWidget, Ui_Form):
@@ -36,6 +37,7 @@ class ProdCad(qtw.QWidget, Ui_Form):
         self.lucro.editingFinished.connect(self.calcularporcentagem)
         self.cancelar.close()
         self.cancelar.clicked.connect(self.cancel)
+        self.buscar.clicked.connect(self.buscarProdTab)
         #self.codigo.bind("<Return>", self.buscarProduto)
         # Your code ends here
         self.show()
@@ -48,6 +50,9 @@ class ProdCad(qtw.QWidget, Ui_Form):
             self.habilitarCampos()
             self.codigo.setEnabled(False)
             self.cancelar.show()
+
+    def buscarProdTab(self):
+        self.buscar = buscarProdCod.buscarProd()
 
     def calcularporcentagem(self):
         lucro = self.lucro.text()

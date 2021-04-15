@@ -7,6 +7,7 @@ from testebancosqlite import conexaoBanco as conexao
 from sqlite3 import Error
 from datetime import datetime
 from buscarVendaCod import buscarVenda as bv
+import buscarProdCod
 import main
 
 
@@ -23,6 +24,7 @@ class Venda(qtw.QWidget, Ui_Form):
         self.clicod.editingFinished.connect(self.buscarCliente)
         self.salvar.clicked.connect(self.addProd)
         self.buscar.clicked.connect(self.buscarVenda)
+        self.prodbuscar.clicked.connect(self.buscarProdTab)
         #self.cadcliente.clicked.connect(self.cadcliente)
         self.show()
 
@@ -34,6 +36,9 @@ class Venda(qtw.QWidget, Ui_Form):
 
     def buscarVenda(self):
         self.buscar = bv()
+
+    def buscarProdTab(self):
+        self.buscar = buscarProdCod.buscarProd()
 
     def limparProd(self):
         self.prodcod.setText("")

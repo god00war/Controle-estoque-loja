@@ -29,7 +29,7 @@ class ProdCad(qtw.QWidget, Ui_Form):
         self.proximo.clicked.connect(self.proximoItem)
         self.ultimo.clicked.connect(self.ultimoItem)
         self.editar.clicked.connect(self.liberarCampos)
-        self.codigo.editingFinished.connect(self.buscarProduto)
+        self.codigo.editingFinished.connect(self.buscarCod)
         self.novo.clicked.connect(self.newProd)
         self.salvar.clicked.connect(self.addProd)
         self.voltarTela.clicked.connect(self.fecharTela)
@@ -149,9 +149,21 @@ class ProdCad(qtw.QWidget, Ui_Form):
         self.newProd()
         self.codigo.setEnabled(True)
 
-    def buscarProduto(self):
+    def buscarCod(self): ####### pega o codigo e chama buscar produto
+        cod = self.codigo.text()
+        global prodid
+        if(cod == ""):
+            cod = prodid
+        self.buscarProduto(cod)
+
+    @staticmethod
+    def buscarCodPesq(cod): ####### pega o codigo de buscarProdCod e coloca no campo
+        global prodid
+        prodid = cod
+        self.ProdCad.buscarCod()
+
+    def buscarProduto(self, codigo):
         try:
-            codigo = self.codigo.text()
             global prodid
             prodid = codigo
             con = conexao()
@@ -279,7 +291,7 @@ class ProdCad(qtw.QWidget, Ui_Form):
             resultado = c.fetchall()
             c.close()
             self.codigo.setText(str(resultado[0][0]))
-            self.buscarProduto()
+            self.buscarCod()
         except Exception as e:
             print(e)
         pass
@@ -293,7 +305,7 @@ class ProdCad(qtw.QWidget, Ui_Form):
             resultado = c.fetchone()
             c.close()
             self.codigo.setText(str(resultado[0]))
-            self.buscarProduto()
+            self.buscarCod()
         except Exception as e:
             print(e)
         pass
@@ -318,7 +330,7 @@ class ProdCad(qtw.QWidget, Ui_Form):
         if(resultado < ultimo):
             resultado = int(resultado) + 1
             self.codigo.setText(str(resultado))
-            self.buscarProduto()
+            self.buscarCod()
         else:
             QMessageBox.information(self, "Info", "Produto Não Localizado")
 
@@ -332,7 +344,7 @@ class ProdCad(qtw.QWidget, Ui_Form):
         if (resultado > 1):
             resultado = resultado - 1
             self.codigo.setText(str(resultado))
-            self.buscarProduto()
+            self.buscarCod()
         else:
             QMessageBox.information(self, "Info", "Produto Não Localizado")
 

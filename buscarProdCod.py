@@ -1,3 +1,4 @@
+import produtoCod
 from PyQt5.QtWidgets import *
 import sys,os
 from PyQt5 import QtWidgets as qtw
@@ -5,6 +6,8 @@ from buscarProdTela import Ui_Form
 from testebancosqlite import executarSelect as sel
 from testebancosqlite import conexaoBanco as conexao
 from sqlite3 import Error
+from PyQt5 import QtCore
+
 from datetime import datetime
 import main
 
@@ -19,7 +22,20 @@ class buscarProd(qtw.QWidget, Ui_Form):
         self.pesqnome.clicked.connect(self.buscarProdNome)
         self.pesqcontem.clicked.connect(self.buscarProdNome)
         self.pesqcod.clicked.connect(self.buscarProdCod)
+        self.tableprod.cellDoubleClicked.connect(self.on_click)
         self.show()
+
+    @QtCore.pyqtSlot(int, int) ###### obtendo o item clicado da tabela
+    def on_click(self, row):
+        item = self.tableprod.item(row, 0)
+        item = item.text()
+        self.mandarCod(item)
+
+
+    def mandarCod(self, item):
+        cod = item
+        print(cod)
+        produtoCod.ProdCad.buscarCodPesq(self,cod)
 
     def verificarOrdem(self):
         nomecresc = self.nomecresc.isChecked()
@@ -41,6 +57,7 @@ class buscarProd(qtw.QWidget, Ui_Form):
             return 5
         else:
             return 1
+
     def buscarProdCod(self):
         ordem = self.verificarOrdem()
         nome = self.codigo.text()

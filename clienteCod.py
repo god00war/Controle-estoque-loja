@@ -1,4 +1,6 @@
 import sys,os
+from functools import partial
+
 from PyQt5.QtWidgets import *
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
@@ -27,7 +29,7 @@ class ClienteLogin(qtw.QWidget, Ui_Form):
         self.salvar.clicked.connect(self.addCliente)
         self.pushButton.clicked.connect(self.uploadImg)
         self.novo.clicked.connect(self.newCliente)
-        self.editar.clicked.connect(self.habilitarCampos)
+        self.editar.clicked.connect(partial(self.editarCampos, campos = 'True'))
         self.estado.currentIndexChanged.connect(self.getCidades)
         self.voltarTela.clicked.connect(self.fecharTela)
         self.cancelar.close()
@@ -361,76 +363,45 @@ class ClienteLogin(qtw.QWidget, Ui_Form):
         if (flag == "0"):
             self.cidade.setCurrentIndex(int(cidNum)+1)
 
-        ##################### Desabilitando os Campos para Edição #####################
-        self.dtCad.setEnabled(False)
-        self.dtNasc.setEnabled(False)
-        self.dtRg.setEnabled(False)
-        self.sexo.setEnabled(False)
-        self.nome.setEnabled(False)
-        self.nomeFan.setEnabled(False)
-        self.rg.setEnabled(False)
-        self.cpf.setEnabled(False)
-        self.obs.setEnabled(False)
-        self.telefone.setEnabled(False)
-        self.celular_2.setEnabled(False)
-        self.empresa.setEnabled(False)
-        self.telEmp.setEnabled(False)
-        self.profissao.setEnabled(False)
-        self.salario.setEnabled(False)
-        self.estCivil.setEnabled(False)
-        self.outrasRendas.setEnabled(False)
+        self.editarCampos(False) # Desabilitando os Campos para Edição
 
-        ###### Endereço ########################
-        self.end.setEnabled(False)
-        self.numero.setEnabled(False)
-        self.complemento.setEnabled(False)
-        self.cep.setEnabled(False)
-        self.bairro.setEnabled(False)
 
-        ###### Referência/ Limite ##############
-        self.ref1.setEnabled(False)
-        self.tel1.setEnabled(False)
-        self.ref2.setEnabled(False)
-        self.tel2.setEnabled(False)
-        self.limite.setEnabled(False)
-        self.estado.setEnabled(False)
-        self.cidade.setEnabled(False)
-
-    def habilitarCampos(self):
+    def editarCampos(self, campos): #
+        valor = bool(campos)
         ##################### Habilitando os Campos para Edição #####################
-        self.dtCad.setEnabled(True)
-        self.dtNasc.setEnabled(True)
-        self.dtRg.setEnabled(True)
-        self.sexo.setEnabled(True)
-        self.nome.setEnabled(True)
-        self.nomeFan.setEnabled(True)
-        self.rg.setEnabled(True)
-        self.cpf.setEnabled(True)
-        self.obs.setEnabled(True)
-        self.telefone.setEnabled(True)
-        self.celular_2.setEnabled(True)
-        self.empresa.setEnabled(True)
-        self.telEmp.setEnabled(True)
-        self.profissao.setEnabled(True)
-        self.salario.setEnabled(True)
-        self.estCivil.setEnabled(True)
-        self.outrasRendas.setEnabled(True)
+        self.dtCad.setEnabled(valor)
+        self.dtNasc.setEnabled(valor)
+        self.dtRg.setEnabled(valor)
+        self.sexo.setEnabled(valor)
+        self.nome.setEnabled(valor)
+        self.nomeFan.setEnabled(valor)
+        self.rg.setEnabled(valor)
+        self.cpf.setEnabled(valor)
+        self.obs.setEnabled(valor)
+        self.telefone.setEnabled(valor)
+        self.celular_2.setEnabled(valor)
+        self.empresa.setEnabled(valor)
+        self.telEmp.setEnabled(valor)
+        self.profissao.setEnabled(valor)
+        self.salario.setEnabled(valor)
+        self.estCivil.setEnabled(valor)
+        self.outrasRendas.setEnabled(valor)
 
         ###### Endereço ########################
-        self.end.setEnabled(True)
-        self.numero.setEnabled(True)
-        self.complemento.setEnabled(True)
-        self.cep.setEnabled(True)
-        self.bairro.setEnabled(True)
+        self.end.setEnabled(valor)
+        self.numero.setEnabled(valor)
+        self.complemento.setEnabled(valor)
+        self.cep.setEnabled(valor)
+        self.bairro.setEnabled(valor)
 
         ###### Referência/ Limite ##############
-        self.ref1.setEnabled(True)
-        self.tel1.setEnabled(True)
-        self.ref2.setEnabled(True)
-        self.tel2.setEnabled(True)
-        self.limite.setEnabled(True)
-        self.estado.setEnabled(True)
-        self.cidade.setEnabled(True)
+        self.ref1.setEnabled(valor)
+        self.tel1.setEnabled(valor)
+        self.ref2.setEnabled(valor)
+        self.tel2.setEnabled(valor)
+        self.limite.setEnabled(valor)
+        self.estado.setEnabled(valor)
+        self.cidade.setEnabled(valor)
 
     def newCliente(self):
         data = datetime.today()
@@ -466,7 +437,7 @@ class ClienteLogin(qtw.QWidget, Ui_Form):
         self.tel2.setText("")
         self.limite.setText("")
         self.getEstados()
-        self.habilitarCampos()
+        self.editarCampos(True)
 
     def ultimoItem(self):
         try:

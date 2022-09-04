@@ -156,10 +156,8 @@ class ProdCad(qtw.QWidget, Ui_Form):
             cod = prodid
         self.buscarProduto(cod)
 
-    @staticmethod
-    def buscarCodPesq(cod): ####### pega o codigo de buscarProdCod e coloca no campo
-        global prodid
-        prodid = cod
+    def buscarCodPesq(self, cod): ####### pega o codigo de buscarProdCod e coloca no campo
+        prodid = self.prodi
         self.ProdCad.buscarCod()
 
     def buscarProduto(self, codigo):

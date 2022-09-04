@@ -8,6 +8,7 @@ from sqlite3 import Error
 from datetime import datetime
 from buscarVendaCod import buscarVenda as bv
 import buscarProdCod
+import buscarCliCod
 import main
 
 
@@ -16,16 +17,21 @@ class Venda(qtw.QWidget, Ui_Form):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
         self.tableWidget.setColumnWidth(0,150) #### Setar o tamanho da coluna
-        rowcount = self.prodbuscar.clicked.connect(self.addProdTable)
+        self.prodbuscar.clicked.connect(self.addProdTable)
         self.voltarTela.clicked.connect(self.fecharTela)
         self.prodcod.editingFinished.connect(self.preencherProd)
         self.desconto.editingFinished.connect(self.somarTotal)
+        self.desconto.editingFinished.connect(self.calctroco)
         self.recebido.editingFinished.connect(self.calctroco)
         self.clicod.editingFinished.connect(self.buscarCliente)
+        self.clibuscar.clicked.connect(self.buscarClienteTela)
+        self.prodbuscar.clicked.connect(self.buscarProdTab)
         self.salvar.clicked.connect(self.addProd)
         self.buscar.clicked.connect(self.buscarVenda)
-        self.prodbuscar.clicked.connect(self.buscarProdTab)
+        #self.prodbuscar.clicked.connect(self.buscarProdTab)
         #self.cadcliente.clicked.connect(self.cadcliente)
+        with open("arqtemp.txt", "w") as arquivo:
+            a = arquivo.write("")
         self.show()
 
     #def cadcliente(self):
@@ -37,8 +43,18 @@ class Venda(qtw.QWidget, Ui_Form):
     def buscarVenda(self):
         self.buscar = bv()
 
+    def buscarClienteTela(self):
+        self.buscarCli = buscarCliCod.buscarCli()
+        arq = open("arqtemp.txt","r")
+        a = arq.read()
+        print(a)
+        self.clicod.setText("")
+        self.clicod.setText(str(a))
+        self.clicod.setFocus()
+        self.clicod.key
+
     def buscarProdTab(self):
-        self.buscar = buscarProdCod.buscarProd()
+        self.buscarProd = buscarProdCod.buscarProd()
 
     def limparProd(self):
         self.prodcod.setText("")
@@ -97,6 +113,8 @@ class Venda(qtw.QWidget, Ui_Form):
 
     def buscarCliente(self):
         cod = self.clicod.text()
+        arq = open("arqtemp.txt","r")
+        a = arq.read()
         if(cod != ''):
             cod = int(cod)
             try:
@@ -115,7 +133,7 @@ class Venda(qtw.QWidget, Ui_Form):
                 try:
                     con = conexao()
                     c = con.cursor()
-                    c.execute(" SELECT cli_nome FROM clientes where cli_id = (?)", (cod,))
+                    c.execute(" SELECT cli_id, cli_nome FROM clientes where cli_id = (?)", (cod,))
                     con.commit()
                     resultado = c.fetchall()
                     c.close()
@@ -124,7 +142,41 @@ class Venda(qtw.QWidget, Ui_Form):
                     flag = "1"
                     print(e)
                 if(flag == "0"):
-                    self.clinome.setText(resultado[0][0])
+                    print("passei buscar cliente 1")
+                    self.clicod.setText(str(resultado[0][0]))
+                    self.clinome.setText(resultado[0][1])
+            else:
+                QMessageBox.information(self, "Info", "Cliente Não Localizado")
+        elif(a != ''):
+            cod = int(a)
+            print("passei")
+            try:
+                con = conexao()
+                c = con.cursor()
+                c.execute(" SELECT * FROM clientes order by cli_id DESC")
+                con.commit()
+                ultimo = c.fetchall()
+                c.close()
+                ultimo = ultimo[0][0]
+                ultimo = int(ultimo)
+            except Exception as e:
+                print(e)
+            pass
+            if (cod < ultimo):
+                try:
+                    con = conexao()
+                    c = con.cursor()
+                    c.execute(" SELECT cli_id, cli_nome FROM clientes where cli_id = (?)", (cod,))
+                    con.commit()
+                    resultado = c.fetchall()
+                    c.close()
+                    flag = "0"
+                except Error as e:
+                    flag = "1"
+                    print(e)
+                if (flag == "0"):
+                    self.clicod.setText(str(resultado[0][0]))
+                    self.clinome.setText(resultado[0][1])
             else:
                 QMessageBox.information(self, "Info", "Cliente Não Localizado")
 
@@ -132,33 +184,56 @@ class Venda(qtw.QWidget, Ui_Form):
     def addProdTable(self):
         rowcount = 0
         codigo = self.prodcod.text()
-        qtde = int(self.prodqtde.text())
+        qtde = self.prodqtde.text()
+        if(qtde !=''):
+            int(qtde)
         rowcount = self.tableWidget.rowCount()
-        print(rowcount)
-        try:
-            con = conexao()
-            c = con.cursor()
-            c.execute(" SELECT prod_cod, prod_desc, prod_preco FROM produtos where prod_id = (?)", (codigo,))
-            con.commit()
-            resultado = c.fetchall()
-            c.close()
-            print(resultado[0])
-        except Error as e:
-            print(e)
-            return e
-        pass
-        preco = float(resultado[0][2])
-        total = preco * qtde
-        self.tableWidget.setRowCount(rowcount + 1)
-        for row in range(len(resultado)):
-            self.tableWidget.setItem(rowcount, 0, QTableWidgetItem(resultado[0][0]))
-            self.tableWidget.setItem(rowcount, 1, QTableWidgetItem(resultado[0][1]))
-            self.tableWidget.setItem(rowcount, 2, QTableWidgetItem(str(qtde)))
-            self.tableWidget.setItem(rowcount, 3, QTableWidgetItem(str(resultado[0][2])))
-            self.tableWidget.setItem(rowcount, 4, QTableWidgetItem(str(total)))
-        self.somarValor()
-        self.limparProd()
-        self.somarTotal()
+        if(codigo !=''):
+            if (qtde != ''):
+                print(rowcount)
+                try:
+                    con = conexao()
+                    c = con.cursor()
+                    c.execute(" SELECT prod_cod, prod_desc, prod_preco FROM produtos where prod_id = (?)", (codigo,))
+                    con.commit()
+                    resultado = c.fetchall()
+                    c.close()
+                    print(resultado[0])
+                except Error as e:
+                    print(e)
+                    return e
+                pass
+                preco = float(resultado[0][2])
+                total = preco * float(qtde)
+                self.tableWidget.setRowCount(rowcount + 1)
+                for row in range(len(resultado)):
+                    self.tableWidget.setItem(rowcount, 0, QTableWidgetItem(resultado[0][0]))
+                    self.tableWidget.setItem(rowcount, 1, QTableWidgetItem(resultado[0][1]))
+                    self.tableWidget.setItem(rowcount, 2, QTableWidgetItem(str(qtde)))
+                    self.tableWidget.setItem(rowcount, 3, QTableWidgetItem(str(resultado[0][2])))
+                    self.tableWidget.setItem(rowcount, 4, QTableWidgetItem(str(total)))
+                self.somarValor()
+                self.limparProd()
+                self.somarTotal()
+            else:
+                QMessageBox.information(self, "Info", "Digite uma Quantidade")
+        else:
+            QMessageBox.information(self, "Info", "Preencha o Produto")
+
+    def buscarCodPesqV(self, cod): ####### pega o codigo de buscarProdCod e coloca no campo, chama
+        recebe = cod
+        print(recebe)
+        #self.prodcod.setText(cod)
+        #self.ProdCad.buscarCod()
+        #self.preencherProd()
+        #self.addProdTable()
+
+   # def buscarCod(self): ####### pega o codigo e chama buscar produto
+       # cod = self.codigo.text()
+       # global prodid
+       # if(cod == ""):
+          #  cod = prodid
+       # self.buscarProduto(cod)
 
     def addProd(self):
         data = datetime.today()
@@ -218,10 +293,11 @@ class Venda(qtw.QWidget, Ui_Form):
                             (venid, prodid, qtd))
                         con.commit()
                         c.close()
-                        QMessageBox.information(self, "Info", "Venda Realizada com Sucesso")
                     except Error as e:
                         QMessageBox.information(self, "Info", "Erro ao Realizar a Venda")
                         print(e)
+                self.tableWidget.clearContents()
+                QMessageBox.information(self, "Info", "Venda Realizada com Sucesso")
 
 
 if __name__ == '__main__':

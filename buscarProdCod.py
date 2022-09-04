@@ -1,3 +1,5 @@
+from functools import partial
+
 import produtoCod
 from PyQt5.QtWidgets import *
 import sys,os
@@ -31,11 +33,18 @@ class buscarProd(qtw.QWidget, Ui_Form):
         item = item.text()
         self.mandarCod(item)
 
-
+   # def buscarCod(self): ####### pega o codigo e chama buscar produto
+      #  cod = self.codigo.text()
+      #  global prodid
+      #  if(cod == ""):
+       #     cod = prodid
+    #    self.buscarProduto(cod)
+    #
     def mandarCod(self, item):
         cod = item
         print(cod)
-        produtoCod.ProdCad.buscarCodPesq(self,cod)
+        partial(self.vendaCod.buscarCodPesqV, cod ) #tentando mandar informação para vendasCod
+        self.vendaCod.buscarCodPesqV(cod)
 
     def verificarOrdem(self):
         nomecresc = self.nomecresc.isChecked()
@@ -58,7 +67,7 @@ class buscarProd(qtw.QWidget, Ui_Form):
         else:
             return 1
 
-    def buscarProdCod(self):
+    def buscarProdCod(self): #Buscar Produto Pelo Codigo
         ordem = self.verificarOrdem()
         nome = self.codigo.text()
         rowcount = 0
@@ -145,7 +154,7 @@ class buscarProd(qtw.QWidget, Ui_Form):
                 self.tableprod.setItem(row, 3, QTableWidgetItem(str(resultado[row][2])))
                 self.tableprod.setItem(row, 4, QTableWidgetItem(str(resultado[row][3])))
 
-    def buscarProdNome(self):
+    def buscarProdNome(self): #Buscar Produto Pelo Nome
         ordem = self.verificarOrdem()
         nome = self.nome.text()
         if(nome != ""):

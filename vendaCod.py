@@ -9,6 +9,7 @@ from datetime import datetime
 from buscarVendaCod import buscarVenda as bv
 import buscarProdCod
 import buscarCliCod
+from decimal import Decimal
 import main
 
 
@@ -17,20 +18,20 @@ class Venda(qtw.QWidget, Ui_Form):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
         self.tableWidget.setColumnWidth(0,150) #### Setar o tamanho da coluna
-        self.prodbuscar.clicked.connect(self.addProdTable)
-        self.voltarTela.clicked.connect(self.fecharTela)
-        self.prodcod.editingFinished.connect(self.preencherProd)
+        ################### EVENTOS ####################
+        self.prodcod.editingFinished.connect(self.preencherProd)  # terminar de editar
         self.desconto.editingFinished.connect(self.somarTotal)
         self.desconto.editingFinished.connect(self.calctroco)
         self.recebido.editingFinished.connect(self.calctroco)
         self.clicod.editingFinished.connect(self.buscarCliente)
-        self.clibuscar.clicked.connect(self.buscarClienteTela)
-        self.prodbuscar.clicked.connect(self.buscarProdTab)
+        self.prodcod.editingFinished.connect(self.preencherProd)
+        self.clibuscar.clicked.connect(self.buscarClienteTela)  # clicar
+        self.voltarTela.clicked.connect(self.fecharTela)
+        self.prodbuscar.clicked.connect(self.buscarProdTela)
         self.salvar.clicked.connect(self.addProd)
         self.buscar.clicked.connect(self.buscarVenda)
-        #self.prodbuscar.clicked.connect(self.buscarProdTab)
-        #self.cadcliente.clicked.connect(self.cadcliente)
-        with open("arqtemp.txt", "w") as arquivo:
+        self.prodqtde.returnPressed.connect(self.addProdTable)  # apertar enter
+        with open("arqtemp.txt", "w") as arquivo: #Limpar arquivo
             a = arquivo.write("")
         self.show()
 
@@ -51,10 +52,16 @@ class Venda(qtw.QWidget, Ui_Form):
         self.clicod.setText("")
         self.clicod.setText(str(a))
         self.clicod.setFocus()
-        self.clicod.key
+        #self.clicod.key
 
-    def buscarProdTab(self):
-        self.buscarProd = buscarProdCod.buscarProd()
+    def buscarProdTela(self):
+        self.buscarProd = buscarProdCod.buscarProd() #chamando a tela de buscar produto
+        #arq = open("arqtemp.txt", "r")
+        #a = arq.read()
+        #print(a)
+        #self.prodcod.setText("")
+        #self.prodcod.setText(str(a))
+        self.prodcod.setFocus()
 
     def limparProd(self):
         self.prodcod.setText("")
@@ -63,9 +70,16 @@ class Venda(qtw.QWidget, Ui_Form):
         self.proddesc.setText("")
         self.prodpreco.setText("")
 
-    def preencherProd(self):
+    def preencherProd(self): #buscando e preenchendo o produto
         codigo = self.prodcod.text()
-        if (codigo != ''):
+        if (codigo == ''): #Se codigo == vazio
+            arq = open("arqtemp.txt", "r")
+            a = arq.read()
+            codigo = a
+            arq.close()
+            print("preencherprod")
+            print(codigo)
+        if (codigo != ''): #Se codigo diferente vazio
             try:
                 con = conexao()
                 c = con.cursor()
@@ -80,6 +94,12 @@ class Venda(qtw.QWidget, Ui_Form):
             pass
             self.proddesc.setText(str(resultado[0][0]))
             self.prodpreco.setText(str(resultado[0][1]))
+            self.prodcod.setText(codigo)
+            self.prodqtde.setFocus()
+            arquivo = open("arqtemp.txt", "w")
+            arquivo.write("")
+            arquivo.close()
+
 
     def somarValor(self):
         valor = 0
@@ -97,7 +117,9 @@ class Venda(qtw.QWidget, Ui_Form):
         valor = self.recebido.text()
         total = self.total.text()
         if (valor and total != ''):
-            troco = float(valor) - float(total)
+            valor = valor.replace(",", ".")
+            total = total.replace(",", ".")
+            troco = Decimal(valor) - Decimal(total)
             self.troco.setText(str(troco))
 
     def somarTotal(self):
@@ -105,6 +127,7 @@ class Venda(qtw.QWidget, Ui_Form):
         desconto = self.desconto.text()
 
         if(valor and desconto != ''):
+            desconto = desconto.replace(",",".")
             total = float(valor) - float(desconto)
             self.total.setText(str(total))
         elif(valor != ''):
@@ -220,9 +243,9 @@ class Venda(qtw.QWidget, Ui_Form):
         else:
             QMessageBox.information(self, "Info", "Preencha o Produto")
 
-    def buscarCodPesqV(self, cod): ####### pega o codigo de buscarProdCod e coloca no campo, chama
-        recebe = cod
-        print(recebe)
+    #def buscarCodPesqV(self, cod): ####### pega o codigo de buscarProdCod e coloca no campo, chama
+        #recebe = cod
+        #print(recebe)
         #self.prodcod.setText(cod)
         #self.ProdCad.buscarCod()
         #self.preencherProd()
@@ -235,10 +258,11 @@ class Venda(qtw.QWidget, Ui_Form):
           #  cod = prodid
        # self.buscarProduto(cod)
 
-    def addProd(self):
+    def addProd(self): #salvando no banco da dados
         data = datetime.today()
         data = str(data)
-        newdata = data[8:10] + "/" + data[5:7] + "/" + data[:4]
+        newdata = data[:4] + "/" + data[5:7] + "/" + data[8:10] #AAAA/MM/DD
+        #newdata = data[8:10] + "/" + data[5:7] + "/" + data[:4]
         cliente = self.clicod.text()
         valor = self.valorbruto.text()
         total = self.total.text()

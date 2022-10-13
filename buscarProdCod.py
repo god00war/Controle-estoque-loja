@@ -29,10 +29,16 @@ class buscarProd(qtw.QWidget, Ui_Form):
 
     @QtCore.pyqtSlot(int, int) ###### obtendo o item clicado da tabela
     def on_click(self, row):
-        item = self.tableprod.item(row, 0)
+        item = self.tableprod.item(row, 4)
         item = item.text()
-        self.mandarCod(item)
+        a = item
+        arquivo = open("arqtemp.txt", "w")
+        arquivo.write(item)
+        arquivo.close()
+        self.fecharTela()
 
+    def fecharTela(self):
+        self.close()
    # def buscarCod(self): ####### pega o codigo e chama buscar produto
       #  cod = self.codigo.text()
       #  global prodid
@@ -40,11 +46,11 @@ class buscarProd(qtw.QWidget, Ui_Form):
        #     cod = prodid
     #    self.buscarProduto(cod)
     #
-    def mandarCod(self, item):
-        cod = item
-        print(cod)
-        partial(self.vendaCod.buscarCodPesqV, cod ) #tentando mandar informação para vendasCod
-        self.vendaCod.buscarCodPesqV(cod)
+    #def mandarCod(self, item):
+     #   cod = item
+     #   print(cod)
+      #  partial(self.vendaCod.buscarCodPesqV, cod ) #tentando mandar informação para vendasCod
+      #  self.vendaCod.buscarCodPesqV(cod)
 
     def verificarOrdem(self):
         nomecresc = self.nomecresc.isChecked()
@@ -72,11 +78,11 @@ class buscarProd(qtw.QWidget, Ui_Form):
         nome = self.codigo.text()
         rowcount = 0
 
-        if(ordem == 1):
+        if(ordem == 1): #nome crescente
             try:
                 con = conexao()
                 c = con.cursor()
-                c.execute(" SELECT prod_cod, prod_desc, prod_custo, prod_preco, prod_est FROM produtos where prod_cod = (?) order by prod_desc", (nome,))
+                c.execute(" SELECT prod_cod, prod_desc, prod_custo, prod_preco, prod_est, prod_id FROM produtos where prod_cod = (?) order by prod_desc", (nome,))
                 con.commit()
                 resultado = c.fetchall()
                 c.close()
@@ -86,11 +92,11 @@ class buscarProd(qtw.QWidget, Ui_Form):
                 print(e)
                 flag = "1"
             pass
-        elif(ordem ==2):
+        elif(ordem ==2): #nome decrescente
             try:
                 con = conexao()
                 c = con.cursor()
-                c.execute(" SELECT prod_cod, prod_desc, prod_custo, prod_preco, prod_est FROM produtos where prod_cod = (?) order by prod_desc DESC", (nome,))
+                c.execute(" SELECT prod_cod, prod_desc, prod_custo, prod_preco, prod_est, prod_id FROM produtos where prod_cod = (?) order by prod_desc DESC", (nome,))
                 con.commit()
                 resultado = c.fetchall()
                 c.close()
@@ -100,11 +106,11 @@ class buscarProd(qtw.QWidget, Ui_Form):
                 print(e)
                 flag = "1"
             pass
-        elif (ordem == 3):
+        elif (ordem == 3): #menor preco
             try:
                 con = conexao()
                 c = con.cursor()
-                c.execute(" SELECT prod_cod, prod_desc, prod_custo, prod_preco, prod_est FROM produtos where prod_cod = (?) order by prod_preco", (nome,))
+                c.execute(" SELECT prod_cod, prod_desc, prod_custo, prod_preco, prod_est, prod_id FROM produtos where prod_cod = (?) order by prod_preco", (nome,))
                 con.commit()
                 resultado = c.fetchall()
                 c.close()
@@ -114,11 +120,11 @@ class buscarProd(qtw.QWidget, Ui_Form):
                 print(e)
                 flag = "1"
             pass
-        elif (ordem == 4):
+        elif (ordem == 4): #maior preço
             try:
                 con = conexao()
                 c = con.cursor()
-                c.execute(" SELECT prod_cod, prod_desc, prod_custo, prod_preco, prod_est FROM produtos where prod_cod = (?) order by prod_preco DESC", (nome,))
+                c.execute(" SELECT prod_cod, prod_desc, prod_custo, prod_preco, prod_est, prod_id FROM produtos where prod_cod = (?) order by prod_preco DESC", (nome,))
                 con.commit()
                 resultado = c.fetchall()
                 c.close()
@@ -128,11 +134,11 @@ class buscarProd(qtw.QWidget, Ui_Form):
                 print(e)
                 flag = "1"
             pass
-        elif (ordem == 5):
+        elif (ordem == 5): #sem estoque
             try:
                 con = conexao()
                 c = con.cursor()
-                c.execute(" SELECT prod_cod, prod_desc, prod_custo, prod_preco, prod_est FROM produtos where prod_cod = (?) AND prod_est = '0'", (nome,))
+                c.execute(" SELECT prod_cod, prod_desc, prod_custo, prod_preco, prod_est, prod_id FROM produtos where prod_cod = (?) AND prod_est = '0'", (nome,))
                 con.commit()
                 resultado = c.fetchall()
                 c.close()
@@ -153,6 +159,7 @@ class buscarProd(qtw.QWidget, Ui_Form):
                 self.tableprod.setItem(row, 2, QTableWidgetItem(str(resultado[row][4])))
                 self.tableprod.setItem(row, 3, QTableWidgetItem(str(resultado[row][2])))
                 self.tableprod.setItem(row, 4, QTableWidgetItem(str(resultado[row][3])))
+                self.tableprod.setItem(row, 5, QTableWidgetItem(str(resultado[row][5]))) ############
 
     def buscarProdNome(self): #Buscar Produto Pelo Nome
         ordem = self.verificarOrdem()
@@ -168,7 +175,7 @@ class buscarProd(qtw.QWidget, Ui_Form):
             try:
                 con = conexao()
                 c = con.cursor()
-                c.execute(" SELECT prod_cod, prod_desc, prod_custo, prod_preco, prod_est FROM produtos where prod_desc like (?) order by prod_desc", (nome,))
+                c.execute(" SELECT prod_cod, prod_desc, prod_custo, prod_preco, prod_est, prod_id FROM produtos where prod_desc like (?) order by prod_desc", (nome,))
                 con.commit()
                 resultado = c.fetchall()
                 c.close()
@@ -182,7 +189,7 @@ class buscarProd(qtw.QWidget, Ui_Form):
             try:
                 con = conexao()
                 c = con.cursor()
-                c.execute(" SELECT prod_cod, prod_desc, prod_custo, prod_preco, prod_est FROM produtos where prod_desc like (?) order by prod_desc DESC", (nome,))
+                c.execute(" SELECT prod_cod, prod_desc, prod_custo, prod_preco, prod_est, prod_id FROM produtos where prod_desc like (?) order by prod_desc DESC", (nome,))
                 con.commit()
                 resultado = c.fetchall()
                 c.close()
@@ -196,7 +203,7 @@ class buscarProd(qtw.QWidget, Ui_Form):
             try:
                 con = conexao()
                 c = con.cursor()
-                c.execute(" SELECT prod_cod, prod_desc, prod_custo, prod_preco, prod_est FROM produtos where prod_desc like (?) order by prod_preco", (nome,))
+                c.execute(" SELECT prod_cod, prod_desc, prod_custo, prod_preco, prod_est, prod_id FROM produtos where prod_desc like (?) order by prod_preco", (nome,))
                 con.commit()
                 resultado = c.fetchall()
                 c.close()
@@ -210,7 +217,7 @@ class buscarProd(qtw.QWidget, Ui_Form):
             try:
                 con = conexao()
                 c = con.cursor()
-                c.execute(" SELECT prod_cod, prod_desc, prod_custo, prod_preco, prod_est FROM produtos where prod_desc like (?) order by prod_preco DESC", (nome,))
+                c.execute(" SELECT prod_cod, prod_desc, prod_custo, prod_preco, prod_est, prod_id FROM produtos where prod_desc like (?) order by prod_preco DESC", (nome,))
                 con.commit()
                 resultado = c.fetchall()
                 c.close()
@@ -224,7 +231,7 @@ class buscarProd(qtw.QWidget, Ui_Form):
             try:
                 con = conexao()
                 c = con.cursor()
-                c.execute(" SELECT prod_cod, prod_desc, prod_custo, prod_preco, prod_est FROM produtos where prod_desc like (?) AND prod_est = '0'", (nome,))
+                c.execute(" SELECT prod_cod, prod_desc, prod_custo, prod_preco, prod_est, prod_id FROM produtos where prod_desc like (?) AND prod_est = '0'", (nome,))
                 con.commit()
                 resultado = c.fetchall()
                 c.close()
@@ -242,10 +249,11 @@ class buscarProd(qtw.QWidget, Ui_Form):
             for row in range(len(resultado)):
                 self.tableprod.setItem(row, 0, QTableWidgetItem(str(resultado[row][0])))
                 self.tableprod.setItem(row, 1, QTableWidgetItem(str(resultado[row][1])))
-                self.tableprod.setItem(row, 2, QTableWidgetItem(str(resultado[row][4])))
-                self.tableprod.setItem(row, 3, QTableWidgetItem(str(resultado[row][2])))
-                self.tableprod.setItem(row, 4, QTableWidgetItem(str(resultado[row][3])))
+                self.tableprod.setItem(row, 2, QTableWidgetItem(str(resultado[row][2])))
+                self.tableprod.setItem(row, 3, QTableWidgetItem(str(resultado[row][3])))
+                self.tableprod.setItem(row, 4, QTableWidgetItem(str(resultado[row][5])))
 if __name__ == '__main__':
     app = qtw.QApplication(sys.argv)
     w = buscarProd()
     sys.exit(app.exec_())
+

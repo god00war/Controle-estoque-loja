@@ -19,14 +19,16 @@ class TelaEstoque(qtw.QWidget, Ui_AlterarEstoque):
         self.close()
 
     def altEstoque(self):
-        id = produtoCod.ProdCad.retornarProdId(self) ######### buscando O ultimo Id que foi selecionado
-        print(id)
+        arq = open("arqtemp.txt", "r")
+        a = arq.read()
+        codigo = a
+        arq.close()
         quant = self.codigo.text()
-        if (id !="" and id != "0"):
+        if (codigo != ""):
             try:
                 con = conexao()
                 c = con.cursor()
-                c.execute(" UPDATE produtos SET prod_est = (?) WHERE prod_id = (?)", (quant,id))
+                c.execute(" UPDATE produtos SET prod_est = (?) WHERE prod_id = (?)", (quant,codigo))
                 con.commit()
                 c.close()
                 QMessageBox.information(self, "Info", "Estoque alterado com Sucesso")

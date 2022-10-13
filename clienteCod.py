@@ -366,7 +366,7 @@ class ClienteLogin(qtw.QWidget, Ui_Form):
         self.editarCampos(False) # Desabilitando os Campos para Edição
 
 
-    def editarCampos(self, campos): #
+    def editarCampos(self, campos): # Habilitar ou desabilitar campos para a edição
         valor = bool(campos)
         ##################### Habilitando os Campos para Edição #####################
         self.dtCad.setEnabled(valor)

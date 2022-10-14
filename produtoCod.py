@@ -8,7 +8,6 @@ from produtoTela import Ui_Form
 from testebancosqlite import executarSelect as sel
 from testebancosqlite import conexaoBanco as conexao
 from sqlite3 import Error
-from tkinter import *
 import time
 import asyncio
 import buscarProdCod
@@ -23,8 +22,6 @@ class ProdCad(qtw.QWidget, Ui_Form):
         #self.ui = Ui_Form()  ### Para não usar o .ui tem que declarar o 'Ui_Form' no parametro da classe
         #self.ui.setupUi(self)       self.setupUi(self)
         self.setupUi(self)
-        global flag
-        flag = "0"
         #self.primeiro.clicked.connect(self.)
         self.primeiro.clicked.connect(self.primeiroItem)
         self.anterior.clicked.connect(self.anteriorItem)
@@ -32,7 +29,7 @@ class ProdCad(qtw.QWidget, Ui_Form):
         self.excluir.clicked.connect(self.teste)
         self.ultimo.clicked.connect(self.ultimoItem)
         self.editar.clicked.connect(self.liberarCampos)
-        self.codigo.editingFinished.connect(self.buscarCod)
+        #self.codigo.editingFinished.connect(self.buscarCod)
         self.novo.clicked.connect(self.newProd)
         self.salvar.clicked.connect(self.addProd)
         self.voltarTela.clicked.connect(self.fecharTela)
@@ -42,6 +39,7 @@ class ProdCad(qtw.QWidget, Ui_Form):
         self.cancelar.close()
         self.cancelar.clicked.connect(self.cancel)
         self.buscar.clicked.connect(self.buscarProdTab)
+        self.codigo.returnPressed.connect(self.buscarCod)
         #self.codigo.bind("<Return>", self.buscarProduto)
         # Your code ends here
         with open("arqtemp.txt", "w") as arquivo: #Limpar arquivo
@@ -55,25 +53,17 @@ class ProdCad(qtw.QWidget, Ui_Form):
         if valor == QMessageBox.Ok:
             self.editarCampos(True)
 
+    def buscarCod(self):  ####### pega o codigo e chama buscar produto
+        cod = self.codigo.text()
+        if (cod != ''):
+            self.buscarProduto(cod)
+
+
     def buscarProdTab(self): #chama tela de pesquisar produto
-        with open("arqtemp.txt", "w") as arquivo: #Limpar arquivo
-            a = arquivo.write("")
-            arquivo.close()
         self.busc =  buscarProdCod.buscarProd()
         self.worker = WorkedThread()
         self.worker.start()
-        self.worker.update_archive.connect(self.buscarCod)
-        print("passei porra")
-        #self.busc.closeEvent(print("fechou porra"))
-        #self.buscar.closeEvent()
-        #print("buscarprodtab")
-        #arq = open("arqtemp.txt", "r")
-       # a = arq.read()
-        #print(a)
-        #self.codigo.setText("")
-        #self.codigo.setText(str(a))
-        #self.codigo.setFocus()
-        #self.buscarCod()
+        self.worker.update_archive.connect(self.buscarProduto)
 
     def codigobarra(self):
         a = self.codBarras.text()
@@ -233,94 +223,86 @@ class ProdCad(qtw.QWidget, Ui_Form):
             self.newProd()
             self.editarCampos(False)
 
-
-    def buscarCod(self, val): ####### pega o codigo e chama buscar produto
-        cod = self.codigo.text()
-
-        if (val != ''):
-            print("passei if")
-            val = int(val)
-            self.buscarProduto(val)
-            print(cod)
-        elif(cod != ""):
-            print("passei elif")
-            cod = int(cod)
-            self.buscarProduto(cod)
-
-
     def buscarProduto(self, codigo): #busca produto e preenche campos
-        try:
-            print("entrei buscar produto")
-            con = conexao()
-            c = con.cursor()
-            c.execute(" SELECT * FROM produtos where prod_id = (?)", (codigo,))
-            con.commit()
-            resultado = c.fetchall()
-            c.close()
+        if (codigo != ''):
+            print("Buscar Produto")
+            self.codigo.setText(str(codigo))
+            try:
+                con = conexao()
+                c = con.cursor()
+                c.execute(" SELECT * FROM produtos where prod_id = (?)", (codigo,))
+                con.commit()
+                resultado = c.fetchall()
+                c.close()
 
-            ############## Recebendo Valores ######################
-            undMedida = resultado[0][3]
-            classe = resultado[0][4]
-            setor = resultado[0][7]
-            if (undMedida != ""):  ########### Setando o valor da Medida
-                if (undMedida == "Unidade"):
-                    undMedida = "0"
-                elif (undMedida == "Caixa"):
-                    undMedida = "1"
-                elif (undMedida == "Peça"):
-                    undMedida = "2"
-                elif (undMedida == "Conjunto"):
-                    undMedida = "3"
+                ############## Recebendo Valores ######################
+                undMedida = resultado[0][3]
+                classe = resultado[0][4]
+                setor = resultado[0][7]
+
+                if (undMedida != ""):  ########### Setando o valor da Medida
+                    if (undMedida == "Unidade"):
+                        undMedida = "0"
+                    elif (undMedida == "Caixa"):
+                        undMedida = "1"
+                    elif (undMedida == "Peça"):
+                        undMedida = "2"
+                    elif (undMedida == "Conjunto"):
+                        undMedida = "3"
+                    else:
+                        undMedida = "0"
+                    self.undMedida.setCurrentIndex(int(undMedida))
+
+                if (classe != ""):  ########### Setando o valor da Classe
+                    if (classe == "Diverso"):
+                        classe = "0"
+                    elif (classe == "Roupa"):
+                        classe = "1"
+                    elif (classe == "Calçado"):
+                        classe = "2"
+                    else:
+                        classe = "0"
+                    self.classe.setCurrentIndex(int(classe))
+
+                if (setor != ""):  ########### Setando o valor do setor
+                    if (setor == "Masculino"):
+                        setor = "0"
+                    elif (setor == "Feminino"):
+                        setor = "1"
+                    elif (setor == "Infantil"):
+                        setor = "2"
+                    elif (setor == "Calçado"):
+                        setor = "3"
+                    else:
+                        setor = "0"
+                    self.setor.setCurrentIndex(int(setor))
+
+                dtCad = resultado[0][8]
+                print(dtCad)
+                if (dtCad != ""):
+                    data = datetime.strptime(dtCad, '%d/%m/%Y')
                 else:
-                    undMedida = "0"
-                self.undMedida.setCurrentIndex(int(undMedida))
+                    data = datetime.today()
+                precocusto = "{:.2f}".format(float(resultado[0][5])) # colocar 2 zeros depois da virgula
+                precofinal = "{:.2f}".format(float(resultado[0][6])) # colocar 2 zeros depois da virgula
 
-            if (classe != ""):  ########### Setando o valor da Classe
-                if (classe == "Diverso"):
-                    classe = "0"
-                elif (classe == "Roupa"):
-                    classe = "1"
-                elif (classe == "Calçado"):
-                    classe = "2"
-                else:
-                    classe = "0"
-                self.classe.setCurrentIndex(int(classe))
-
-            if (setor != ""):  ########### Setando o valor do setor
-                if (setor == "Masculino"):
-                    setor = "0"
-                elif (setor == "Feminino"):
-                    setor = "1"
-                elif (setor == "Infantil"):
-                    setor = "2"
-                elif (setor == "Calçado"):
-                    setor = "3"
-                else:
-                    setor = "0"
-                self.setor.setCurrentIndex(int(setor))
-
-            dtCad = resultado[0][8]
-            print(dtCad)
-            if (dtCad != ""):
-                data = datetime.strptime(dtCad, '%d/%m/%Y')
-            else:
-                data = datetime.today()
-            precocusto = "{:.2f}".format(float(resultado[0][5])) # colocar 2 zeros depois da virgula
-            precofinal = "{:.2f}".format(float(resultado[0][6])) # colocar 2 zeros depois da virgula
-            ############# Inserindo valores nos Campos ############
-            self.descricao.setText(str(resultado[0][1]))
-            self.codBarras.setText(str(resultado[0][2]))
-            self.precocusto.setText(str(precocusto))
-            self.precofinal.setText(str(precofinal))
-            self.dtCad.setDate(data)
-            self.lucro.setText(str(resultado[0][9]))
-        except Error as e:
-            print(e)
-            return e
-        pass
-
-        self.editarCampos(False)
-
+                ############# Inserindo valores nos Campos ############
+                self.descricao.setText(str(resultado[0][1]))
+                self.codBarras.setText(str(resultado[0][2]))
+                self.precocusto.setText(str(precocusto))
+                self.precofinal.setText(str(precofinal))
+                self.dtCad.setDate(data)
+                self.lucro.setText(str(resultado[0][9]))
+                self.editarCampos(False)
+                with open("arqtemp.txt", "w") as arquivo:  # Limpar arquivo
+                    arquivo.write("")
+                    arquivo.close()
+            except Error as e:
+                print(e)
+                return e
+            pass
+        else:
+            QMessageBox.information(self, "Info", "Código Não Encontrado")
     def editarCampos(self, campos):  # Habilitar ou desabilitar campos para a edição
         valor = bool(campos)
         ##################### Campos para Edição #####################
@@ -380,8 +362,7 @@ class ProdCad(qtw.QWidget, Ui_Form):
             con.commit()
             resultado = c.fetchall()
             c.close()
-            self.codigo.setText(str(resultado[0][0]))
-            self.buscarCod((resultado[0][0]))
+            self.buscarProduto((resultado[0][0]))
         except Exception as e:
             print(e)
         pass
@@ -395,8 +376,7 @@ class ProdCad(qtw.QWidget, Ui_Form):
             con.commit()
             resultado = c.fetchone()
             c.close()
-            self.codigo.setText(str(resultado[0]))
-            self.buscarCod(resultado[0])
+            self.buscarProduto(resultado[0])
         except Exception as e:
             print(e)
         pass
@@ -421,8 +401,7 @@ class ProdCad(qtw.QWidget, Ui_Form):
         resultado = int(resultado)
         if(resultado < ultimo):
             resultado = int(resultado) + 1
-            self.codigo.setText(str(resultado))
-            self.buscarCod(resultado)
+            self.buscarProduto(resultado)
         else:
             QMessageBox.information(self, "Info", "Produto Não Localizado")
 
@@ -434,8 +413,7 @@ class ProdCad(qtw.QWidget, Ui_Form):
         resultado = int(resultado)
         if (resultado > 1):
             resultado = resultado - 1
-            self.codigo.setText(str(resultado))
-            self.buscarCod(resultado)
+            self.buscarProduto(resultado)
         else:
             QMessageBox.information(self, "Info", "Produto Não Localizado")
 
@@ -446,13 +424,11 @@ class WorkedThread(QThread):
         print("dentro da thread")
         a = ""
         while (a == ""):
-            #a = self.busc.isEnabled()
             arq = open("arqtemp.txt", "r")
             a = arq.read()
             a = str(a)
             arq.close()
-            print(a)
-            time.sleep(1)
+            time.sleep(.15)
         self.update_archive.emit(a)
         pass
 

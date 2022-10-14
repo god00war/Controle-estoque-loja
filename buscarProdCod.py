@@ -1,18 +1,10 @@
-from functools import partial
-
-import produtoCod
 from PyQt5.QtWidgets import *
-import sys,os
+import sys
 from PyQt5 import QtWidgets as qtw
 from buscarProdTela import Ui_Form
-from testebancosqlite import executarSelect as sel
 from testebancosqlite import conexaoBanco as conexao
 from sqlite3 import Error
 from PyQt5 import QtCore
-
-from datetime import datetime
-import main
-
 
 class buscarProd(qtw.QWidget, Ui_Form):
 
@@ -39,18 +31,6 @@ class buscarProd(qtw.QWidget, Ui_Form):
 
     def fecharTela(self):
         self.close()
-   # def buscarCod(self): ####### pega o codigo e chama buscar produto
-      #  cod = self.codigo.text()
-      #  global prodid
-      #  if(cod == ""):
-       #     cod = prodid
-    #    self.buscarProduto(cod)
-    #
-    #def mandarCod(self, item):
-     #   cod = item
-     #   print(cod)
-      #  partial(self.vendaCod.buscarCodPesqV, cod ) #tentando mandar informação para vendasCod
-      #  self.vendaCod.buscarCodPesqV(cod)
 
     def verificarOrdem(self):
         nomecresc = self.nomecresc.isChecked()
@@ -171,7 +151,7 @@ class buscarProd(qtw.QWidget, Ui_Form):
             nome = "%" + nome + "%"
         rowcount = 0
 
-        if(ordem == 1):
+        if(ordem == 1): #### Organizar em Nome A-Z
             try:
                 con = conexao()
                 c = con.cursor()
@@ -185,7 +165,7 @@ class buscarProd(qtw.QWidget, Ui_Form):
                 print(e)
                 flag = "1"
             pass
-        elif(ordem ==2):
+        elif(ordem ==2):#### Organizar em Nome Z-A
             try:
                 con = conexao()
                 c = con.cursor()
@@ -199,7 +179,7 @@ class buscarProd(qtw.QWidget, Ui_Form):
                 print(e)
                 flag = "1"
             pass
-        elif (ordem == 3):
+        elif (ordem == 3):#### Organizar por Menor Preço
             try:
                 con = conexao()
                 c = con.cursor()
@@ -213,7 +193,7 @@ class buscarProd(qtw.QWidget, Ui_Form):
                 print(e)
                 flag = "1"
             pass
-        elif (ordem == 4):
+        elif (ordem == 4):#### Organizar por Maior Preço
             try:
                 con = conexao()
                 c = con.cursor()
@@ -227,7 +207,7 @@ class buscarProd(qtw.QWidget, Ui_Form):
                 print(e)
                 flag = "1"
             pass
-        elif (ordem == 5):
+        elif (ordem == 5):#### Mostrar Produtos Sem Estoque
             try:
                 con = conexao()
                 c = con.cursor()
@@ -252,6 +232,7 @@ class buscarProd(qtw.QWidget, Ui_Form):
                 self.tableprod.setItem(row, 2, QTableWidgetItem(str(resultado[row][2])))
                 self.tableprod.setItem(row, 3, QTableWidgetItem(str(resultado[row][3])))
                 self.tableprod.setItem(row, 4, QTableWidgetItem(str(resultado[row][5])))
+
 if __name__ == '__main__':
     app = qtw.QApplication(sys.argv)
     w = buscarProd()

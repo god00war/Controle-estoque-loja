@@ -2,14 +2,18 @@ from PyQt5.QtWidgets import *
 import sys,os
 from PyQt5 import QtWidgets as qtw
 from vendasTela import Ui_Form
+from PyQt5.QtCore import *
 from testebancosqlite import executarSelect as sel
 from testebancosqlite import conexaoBanco as conexao
 from sqlite3 import Error
 from datetime import datetime
 from buscarVendaCod import buscarVenda as bv
+from produtoCod import ProdCad as pc
+from clienteCod import ClienteLogin as ct
 import buscarProdCod
 import buscarCliCod
 from decimal import Decimal
+import time
 import main
 
 
@@ -19,20 +23,20 @@ class Venda(qtw.QWidget, Ui_Form):
         self.setupUi(self)
         self.tableWidget.setColumnWidth(0,150) #### Setar o tamanho da coluna
         ################### EVENTOS ####################
-        self.prodcod.editingFinished.connect(self.preencherProd)  # terminar de editar
-        self.desconto.editingFinished.connect(self.somarTotal)
+        self.desconto.editingFinished.connect(self.somarTotal)  # terminar de editar
         self.desconto.editingFinished.connect(self.calctroco)
         self.recebido.editingFinished.connect(self.calctroco)
-        self.clicod.editingFinished.connect(self.buscarCliente)
-        self.prodcod.editingFinished.connect(self.preencherProd)
         self.clibuscar.clicked.connect(self.buscarClienteTela)  # clicar
         self.voltarTela.clicked.connect(self.fecharTela)
         self.prodbuscar.clicked.connect(self.buscarProdTela)
         self.salvar.clicked.connect(self.addProd)
         self.buscar.clicked.connect(self.buscarVenda)
+        self.cadproduto.clicked.connect(self.produtoTela)
+        self.cadcliente.clicked.connect(self.clienteTela)
         self.prodqtde.returnPressed.connect(self.addProdTable)  # apertar enter
-        with open("arqtemp.txt", "w") as arquivo: #Limpar arquivo
-            a = arquivo.write("")
+        self.prodcod.returnPressed.connect(self.buscarCod)
+        self.clicod.returnPressed.connect(self.buscarCliCod)
+
         self.show()
 
     #def cadcliente(self):
@@ -41,27 +45,26 @@ class Venda(qtw.QWidget, Ui_Form):
     def fecharTela(self):
         self.close()
 
-    def buscarVenda(self):
+    def buscarVenda(self): #### Chama a Tela Buscar Vendas
         self.buscar = bv()
+
+    def produtoTela(self):  #### Chama a Tela Buscar Vendas
+        self.buscar = pc()
+
+    def clienteTela(self):  #### Chama a Tela Buscar Vendas
+        self.buscar = ct()
 
     def buscarClienteTela(self):
         self.buscarCli = buscarCliCod.buscarCli()
-        arq = open("arqtemp.txt","r")
-        a = arq.read()
-        print(a)
-        self.clicod.setText("")
-        self.clicod.setText(str(a))
-        self.clicod.setFocus()
-        #self.clicod.key
+        self.worker = WorkedThread()
+        self.worker.start()
+        self.worker.update_archive.connect(self.buscarCliente)
 
     def buscarProdTela(self):
-        self.buscarProd = buscarProdCod.buscarProd() #chamando a tela de buscar produto
-        #arq = open("arqtemp.txt", "r")
-        #a = arq.read()
-        #print(a)
-        #self.prodcod.setText("")
-        #self.prodcod.setText(str(a))
-        self.prodcod.setFocus()
+        self.busc = buscarProdCod.buscarProd() #chamando a tela de buscar produto
+        self.worker = WorkedThread()
+        self.worker.start()
+        self.worker.update_archive.connect(self.preencherProd)
 
     def limparProd(self):
         self.prodcod.setText("")
@@ -70,15 +73,20 @@ class Venda(qtw.QWidget, Ui_Form):
         self.proddesc.setText("")
         self.prodpreco.setText("")
 
-    def preencherProd(self): #buscando e preenchendo o produto
-        codigo = self.prodcod.text()
-        if (codigo == ''): #Se codigo == vazio
-            arq = open("arqtemp.txt", "r")
-            a = arq.read()
-            codigo = a
-            arq.close()
-            print("preencherprod")
-            print(codigo)
+    def buscarCod(self):  ####### pega o codigo e chama preencherProd
+        cod = self.prodcod.text()
+        if (cod != ''):
+            self.preencherProd(cod)
+
+    def buscarCliCod(self):  ####### pega o codigo e chama buscarCliente
+        cod = self.clicod.text()
+        if (cod != ''):
+            self.buscarCliente(cod)
+
+    def preencherProd(self, var): #buscando e preenchendo o produto
+        codigo = var
+        flag = 0
+
         if (codigo != ''): #Se codigo diferente vazio
             try:
                 con = conexao()
@@ -87,19 +95,31 @@ class Venda(qtw.QWidget, Ui_Form):
                 con.commit()
                 resultado = c.fetchall()
                 c.close()
-                print(resultado[0])
             except Error as e:
+                flag = 1
                 print(e)
                 return e
             pass
-            self.proddesc.setText(str(resultado[0][0]))
-            self.prodpreco.setText(str(resultado[0][1]))
-            self.prodcod.setText(codigo)
-            self.prodqtde.setFocus()
-            arquivo = open("arqtemp.txt", "w")
-            arquivo.write("")
-            arquivo.close()
-
+            if(flag == 1):
+                preco = "{:.2f}".format(resultado[0][1]) #### Dois zeros depois da virgula
+                self.proddesc.setText(str(resultado[0][0]))
+                self.prodpreco.setText(str(preco))
+                self.prodcod.setText(codigo)
+                self.prodqtde.setFocus()
+                with open("arqtemp.txt", "w") as arquivo:  # Limpar arquivo
+                    arquivo.write("")
+            else:
+                QMessageBox.information(self, "Info", "Produto Não Localizado")
+    @staticmethod
+    def truncate(num, n):  # truncar float (Omitir N digitos depois da virgula)
+        temp = str(num)
+        for x in range(len(temp)):
+            if temp[x] == '.':
+                try:
+                    return float(temp[:x + n + 1])
+                except:
+                    return float(temp)
+        return float(temp)
 
     def somarValor(self):
         valor = 0
@@ -111,7 +131,9 @@ class Venda(qtw.QWidget, Ui_Form):
                 vlr = float(vlr)
                 #vlr = float(vlr)
                 valor = valor + vlr
-            self.valorbruto.setText(str(valor))
+            valor = "{:.2f}".format(valor) #### Dois zeros depois da virgula
+            self.valor.setText(str(valor))
+
 
     def calctroco(self):
         valor = self.recebido.text()
@@ -120,24 +142,30 @@ class Venda(qtw.QWidget, Ui_Form):
             valor = valor.replace(",", ".")
             total = total.replace(",", ".")
             troco = Decimal(valor) - Decimal(total)
+            troco = "{:.2f}".format(troco) #### Dois zeros depois da virgula
             self.troco.setText(str(troco))
 
     def somarTotal(self):
-        valor = self.valorbruto.text()
+        valor = self.valor.text()
         desconto = self.desconto.text()
 
         if(valor and desconto != ''):
             desconto = desconto.replace(",",".")
             total = float(valor) - float(desconto)
+            total = "{:.2f}".format(float(total))  #### Dois zeros depois da virgula
+            desconto = "{:.2f}".format(float(desconto))  #### Dois zeros depois da virgula
             self.total.setText(str(total))
+            self.desconto.setText(str(desconto))
         elif(valor != ''):
+            desconto = 0
             total = valor
+            total = "{:.2f}".format(float(total))  #### Dois zeros depois da virgula
+            desconto = "{:.2f}".format(float(desconto))  #### Dois zeros depois da virgula
             self.total.setText(str(total))
+            self.desconto.setText(str(desconto))
 
-    def buscarCliente(self):
-        cod = self.clicod.text()
-        arq = open("arqtemp.txt","r")
-        a = arq.read()
+    def buscarCliente(self, var):
+        cod = var
         if(cod != ''):
             cod = int(cod)
             try:
@@ -170,41 +198,10 @@ class Venda(qtw.QWidget, Ui_Form):
                     self.clinome.setText(resultado[0][1])
             else:
                 QMessageBox.information(self, "Info", "Cliente Não Localizado")
-        elif(a != ''):
-            cod = int(a)
-            print("passei")
-            try:
-                con = conexao()
-                c = con.cursor()
-                c.execute(" SELECT * FROM clientes order by cli_id DESC")
-                con.commit()
-                ultimo = c.fetchall()
-                c.close()
-                ultimo = ultimo[0][0]
-                ultimo = int(ultimo)
-            except Exception as e:
-                print(e)
-            pass
-            if (cod < ultimo):
-                try:
-                    con = conexao()
-                    c = con.cursor()
-                    c.execute(" SELECT cli_id, cli_nome FROM clientes where cli_id = (?)", (cod,))
-                    con.commit()
-                    resultado = c.fetchall()
-                    c.close()
-                    flag = "0"
-                except Error as e:
-                    flag = "1"
-                    print(e)
-                if (flag == "0"):
-                    self.clicod.setText(str(resultado[0][0]))
-                    self.clinome.setText(resultado[0][1])
-            else:
-                QMessageBox.information(self, "Info", "Cliente Não Localizado")
+            with open("arqtemp.txt", "w") as arquivo:  # Limpar arquivo
+                arquivo.write("")
 
-
-    def addProdTable(self):
+    def addProdTable(self): #### Adiciona o Produto na Tabela de Produtos
         rowcount = 0
         codigo = self.prodcod.text()
         qtde = self.prodqtde.text()
@@ -227,17 +224,25 @@ class Venda(qtw.QWidget, Ui_Form):
                     return e
                 pass
                 preco = float(resultado[0][2])
-                total = preco * float(qtde)
+                print("preco: ", preco)
+                preco = "{:.2f}".format(preco)  # colocar 2 zeros depois da virgula
+                print("preco: ", preco)
+                total = Decimal(preco) * Decimal(qtde)
+                total = self.truncate(total, 2) ### Deixar com duas casas decimais
+                total = "{:.2f}".format(total) # colocar 2 zeros depois da virgula
+
+                print("total: ",total)
                 self.tableWidget.setRowCount(rowcount + 1)
                 for row in range(len(resultado)):
                     self.tableWidget.setItem(rowcount, 0, QTableWidgetItem(resultado[0][0]))
                     self.tableWidget.setItem(rowcount, 1, QTableWidgetItem(resultado[0][1]))
                     self.tableWidget.setItem(rowcount, 2, QTableWidgetItem(str(qtde)))
-                    self.tableWidget.setItem(rowcount, 3, QTableWidgetItem(str(resultado[0][2])))
+                    self.tableWidget.setItem(rowcount, 3, QTableWidgetItem(str(preco)))
                     self.tableWidget.setItem(rowcount, 4, QTableWidgetItem(str(total)))
                 self.somarValor()
                 self.limparProd()
                 self.somarTotal()
+                self.prodcod.setFocus()
             else:
                 QMessageBox.information(self, "Info", "Digite uma Quantidade")
         else:
@@ -323,6 +328,19 @@ class Venda(qtw.QWidget, Ui_Form):
                 self.tableWidget.clearContents()
                 QMessageBox.information(self, "Info", "Venda Realizada com Sucesso")
 
+class WorkedThread(QThread):
+    update_archive = pyqtSignal(str)
+    def run(self):
+        print("dentro da thread")
+        a = ""
+        while (a == ""):
+            arq = open("arqtemp.txt", "r")
+            a = arq.read()
+            a = str(a)
+            arq.close()
+            time.sleep(.15)
+        self.update_archive.emit(a)
+        pass
 
 if __name__ == '__main__':
     app = qtw.QApplication(sys.argv)

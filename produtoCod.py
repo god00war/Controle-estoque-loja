@@ -90,17 +90,8 @@ class ProdCad(qtw.QWidget, Ui_Form):
                 self.precofinal.setText(str(total))
 
     def teste(self):
-        codigo = "999999999991"
-        try:
-            con = conexao()
-            c = con.cursor()
-            c.execute(" SELECT * FROM produtos where prod_cod like (?)", (codigo,))
-            con.commit()
-            a = c.fetchall()
-            c.close()
-            print(a[0][0])
-        except Error as e:
-            print(e)
+        data = datetime.today()
+        print(data)
 
     @staticmethod
     def truncate(num, n): #truncar float (Omitir N digitos depois da virgula)

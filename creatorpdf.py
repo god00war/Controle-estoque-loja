@@ -63,7 +63,7 @@ class Main(QMainWindow):
         try:
             con = conexao()
             c = con.cursor()
-            c.execute(" SELECT * FROM vendas where  ven_data BETWEEN (?) AND (?)", (dti,dtf))
+            c.execute(" SELECT * FROM vendas where  ven_data BETWEEN (?) AND (?) order by ven_data DESC", (dti,dtf))
             con.commit()
             itemvenda = c.fetchall()
             c.close()

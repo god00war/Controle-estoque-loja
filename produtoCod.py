@@ -129,6 +129,8 @@ class ProdCad(qtw.QWidget, Ui_Form):
             precofinal = self.precofinal.text()
             setor = self.setor.currentText()
             dtCad = self.dtCad.text()
+            if (dtCad != ""):
+                dtCad = dtCad[6:10] + "/" + dtCad[3:5] + "/" + dtCad[:2] ####formatando data YYYY/MM/DD
             if (precofinal and precocusto != ""): #calculando a porcentagem de lucro
                 precofinal = precofinal.replace(",", ".")  # substituindo "," por"."
                 precocusto = precocusto.replace(",", ".")  # substituindo "," por"."
@@ -169,6 +171,8 @@ class ProdCad(qtw.QWidget, Ui_Form):
             lucro = self.lucro.text()
             setor = self.setor.currentText()
             dtCad = self.dtCad.text()
+            if (dtCad != ""):
+                dtCad = dtCad[6:10] + "/" + dtCad[3:5] + "/" + dtCad[:2] ####formatando data YYYY/MM/DD
 
             if (precofinal and precocusto != ""):
                 precocusto = precocusto.replace(",",".") #substituindo "," por"."
@@ -271,6 +275,7 @@ class ProdCad(qtw.QWidget, Ui_Form):
                 dtCad = resultado[0][8]
                 print(dtCad)
                 if (dtCad != ""):
+                    dtCad = dtCad[8:10] + "/" + dtCad[5:7] + "/" + dtCad[:4] #### formatando data para dd/mm/yyy
                     data = datetime.strptime(dtCad, '%d/%m/%Y')
                 else:
                     data = datetime.today()

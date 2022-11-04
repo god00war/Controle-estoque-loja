@@ -16,7 +16,7 @@ class buscarVenda(qtw.QWidget, Ui_Form):
         a = ''
         self.setupUi(self)
         self.tableprod.setColumnWidth(0,150) #### Setar o tamanho da coluna
-        self.venid.editingFinished.connect(self.buscarProduto)
+        self.venid.editingFinished.connect(self.buscarVendas)
         self.ultimo.clicked.connect(self.ultimoItem)
         self.primeiro.clicked.connect(self.primeiroItem)
         self.proximo.clicked.connect(self.proximoItem)
@@ -29,7 +29,7 @@ class buscarVenda(qtw.QWidget, Ui_Form):
         self.close()
 
 
-    def buscarProduto(self):
+    def buscarVendas(self):
         try:
             codigo = self.venid.text()
             con = conexao()
@@ -56,6 +56,7 @@ class buscarVenda(qtw.QWidget, Ui_Form):
             elif(vendesc == ""):
                 vendesc = 0
             ventotal = float(venvalorliquido) + float(vendesc)
+            print(vendata)
 
 
             ############## Buscar nome CLiente #################
@@ -150,7 +151,7 @@ class buscarVenda(qtw.QWidget, Ui_Form):
             resultado = c.fetchall()
             c.close()
             self.venid.setText(str(resultado[0][0]))
-            self.buscarProduto()
+            self.buscarVendas()
         except Exception as e:
             print(e)
         pass
@@ -164,7 +165,7 @@ class buscarVenda(qtw.QWidget, Ui_Form):
             resultado = c.fetchone()
             c.close()
             self.venid.setText(str(resultado[0]))
-            self.buscarProduto()
+            self.buscarVendas()
         except Exception as e:
             print(e)
         pass
@@ -189,7 +190,7 @@ class buscarVenda(qtw.QWidget, Ui_Form):
         if(resultado < ultimo):
             resultado = int(resultado) + 1
             self.venid.setText(str(resultado))
-            self.buscarProduto()
+            self.buscarVendas()
         else:
             QMessageBox.information(self, "Info", "Produto Não Localizado")
 
@@ -201,7 +202,7 @@ class buscarVenda(qtw.QWidget, Ui_Form):
         if (resultado > 1):
             resultado = resultado - 1
             self.venid.setText(str(resultado))
-            self.buscarProduto()
+            self.buscarVendas()
         else:
             QMessageBox.information(self, "Info", "Produto Não Localizado")
 

@@ -5,10 +5,8 @@ from PyQt5.QtCore import Qt
 import clienteCod
 import produtoCod
 import vendaCod
+import caixaCod
 from PIL import Image
-
-
-
 
 
 class Main(QMainWindow):
@@ -27,6 +25,11 @@ class Main(QMainWindow):
         self.tb = self.addToolBar("Tool Bar")
         self.tb.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         ###################Tool Bar Buttons################
+        ###################Caixa############
+        self.caixa = QAction(QIcon('icons/caixa.png'), "Caixa", self)
+        self.tb.addAction(self.caixa)
+        self.caixa.triggered.connect(self.funcCaixa)
+        self.tb.addSeparator()
         ###################Clientes############
         self.clientes = QAction(QIcon('icons/person-icon.png'),"Gerenciar Clientes",self)
         self.tb.addAction(self.clientes)
@@ -42,6 +45,9 @@ class Main(QMainWindow):
         self.tb.addAction(self.venda)
         self.venda.triggered.connect(self.funcVenda)
         self.tb.addSeparator()
+
+    def funcCaixa(self):
+        self.newcaixa = caixaCod.Caixa()
 
     def funcCliente(self):
         self.newclientes = clienteCod.ClienteLogin()

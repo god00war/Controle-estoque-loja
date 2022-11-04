@@ -236,8 +236,8 @@ class ClienteLogin(qtw.QWidget, Ui_Form):
             self.editCliente() ######### se tiver um produto selecionado, chama editProduto
 
     def editCliente(self): #### Edita as informações do cliente
-        msg = "Confirma as alterações no Produto?"
-        title = "Alterar Produto"
+        msg = "Confirma as alterações no Cliente?"
+        title = "Alterar Cliente"
         valor = self.messagebox(msg, title)
         flag= ""
 
@@ -516,7 +516,6 @@ class ClienteLogin(qtw.QWidget, Ui_Form):
         else:
             QMessageBox.information(self, "Info", "Código Não Encontrado")
 
-
     def editarCampos(self, campos): # Habilitar ou desabilitar campos para a edição
         valor = bool(campos)
         ##################### Habilitando os Campos para Edição #####################
@@ -558,12 +557,20 @@ class ClienteLogin(qtw.QWidget, Ui_Form):
             self.cancelar.close()
             self.excluir.close()
             self.salvar.close()
+            self.primeiro.show()
+            self.anterior.show()
+            self.proximo.show()
+            self.ultimo.show()
             self.editar.show()
         else:
             self.codigo.setEnabled(False)
             self.cancelar.show()
             self.excluir.close()
             self.salvar.show()
+            self.primeiro.close()
+            self.anterior.close()
+            self.proximo.close()
+            self.ultimo.close()
             self.editar.close()
 
     def newCliente(self):
@@ -651,8 +658,6 @@ class ClienteLogin(qtw.QWidget, Ui_Form):
             self.buscarCliente(resultado)
         else:
             QMessageBox.information(self, "Info", "Cliente Não Localizado")
-
-
 
     def anteriorItem(self):
         resultado = self.codigo.text()

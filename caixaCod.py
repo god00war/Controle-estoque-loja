@@ -199,32 +199,50 @@ class Caixa(qtw.QWidget, Ui_Form):
     def CriarPdf(self, nomes,dti,dtf,din,deb):
         dinheiro = str(din)
         debito = str(deb)
+        credito="49.00"
+        despesas="42.00"
+        receitas="50.00"
+        totalRecebido= Decimal(float(din)) + Decimal(float(deb)) + Decimal(float(credito)) + Decimal(float(receitas))
+        totalRecebido = "{:.2f}".format(totalRecebido)  #### Dois zeros depois da virgula
+        totalRecebido = str(totalRecebido)
+        saldoAtual = Decimal(float(totalRecebido)) - Decimal(float(despesas))
+        saldoAtual = "{:.2f}".format(saldoAtual)  #### Dois zeros depois da virgula
+        saldoAtual = str(saldoAtual)
         #nome = nomes
         # nomes = [('cuzinho'), 'cu cuzao', 'cuzada violenta']
         eixo = 100
-        data = [['VENDAS EM DINHEIRO:',""+dinheiro+""],
-                ['VENDAS NO DÉBITO',""+debito+""],
-                ['DESPESAS', '271,04'],
-                ['OUTRAS RECEITAS', ' ']]
+        data = [['DATA',"HISTÓRICO","RECEBIDO","PAGO"],
+                [""+dtf+"",'VENDAS EM DINHEIRO:',""+dinheiro+"","00.00"],
+                [""+dtf+"",'VENDAS NO DÉBITO',""+debito+"","00.00"],
+                [""+dtf+"",'VENDAS NO CRÉDITO',""+credito+"","00.00"],
+                [""+dtf+"",'DESPESAS','00.00',""+despesas+""],
+                [""+dtf+"",'OUTRAS RECEITAS',""+receitas+"","00.00"],
+                ["TOTAL RECEBIDO",""+totalRecebido+"","TOTAL PAGO",""+despesas+""],
+                ["",'',"SALDO ATUAL",""+saldoAtual+""]]
 
         pdf = SimpleDocTemplate("Teste.pdf")
         flow_obj = []
         styles = getSampleStyleSheet()
-        tstyle = TableStyle([('BOX', (0,0), (-1,-1), 0.25, colors.black),
-                       ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
-                       ('ALIGN',(1,1),(-3,-3),'RIGHT'),
-                       ('VALIGN',(0,-1),(-1,-1),'MIDDLE'),
-                       ('TEXTCOLOR',(0,0),(1,-1),colors.black)])
+        tstyle = TableStyle([('BOX', (0,0), (-1,-1), 0.25, colors.black),# espessura linhas externa
+                       ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),# espessura linhas interna
+                       ('ALIGN',(1,1),(-3,-3),'LEFT'),
+                       ('TOPPADDING', (0, 0), (-1, -1),5),
+                       ('BOTTOMPADDING', (0, 0), (-1, -1),5),
+                       ('FONTSIZE',(0,0),(-1,-1),15),
+                       ('VALIGN', (0, -1), (-1, -1), 'MIDDLE'),
+                       ('TEXTCOLOR',(0,0),(1,-1),colors.black),])
         print(data)
         t = Table(data)
         print(t)
         t.setStyle(tstyle)
 
         style = ParagraphStyle('heading1',
-                               fontName='Helvetica-Bold',
-                               fontSize=20,
-                               textColor=colors.black,
-                               leading=20)
+                                fontName='Helvetica-Bold',
+                                fontSize=20,
+                                textColor=colors.black,
+                                spaceBefore=5,
+                                spaceAfter=20,
+                                leading=20)
 
         flow_obj.append(Paragraph('RELATÓRIO FECHAMENTO DE CAIXA', style))
         flow_obj.append(Paragraph('CONTA: ', style))
